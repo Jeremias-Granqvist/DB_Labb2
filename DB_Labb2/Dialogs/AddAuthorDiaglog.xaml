@@ -6,88 +6,91 @@
         xmlns:local="clr-namespace:DB_Labb2.Dialogs"
         mc:Ignorable="d"
         Title="AddAuthorDiaglog"
-        Height="550"
-        Width="400">
+        Height="400"
+        Width="300">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="134*" />
-            <RowDefinition Height="131*" />
-            <RowDefinition Height="136*" />
-            <RowDefinition Height="134*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        <Label Content="Add new Author"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Grid.ColumnSpan="2"
+               FontSize="22"
+            />
+
         <Label Content="Authors Firstname:"
                Grid.Row="1"
                Height="25"
-               Margin="10,10,10,96"
+               Margin="10,10,10,10"
                HorizontalContentAlignment="Right" />
         <TextBox x:Name="FirstNameTB"
                  Grid.Row="1"
                  Height="25"
-                 Margin="10,10,30,91"
-                 Grid.Column="1"
-                 Grid.ColumnSpan="3" />
+                 Margin="10,10,10,10"
+                 Grid.Column="1" />
         <Label Content="Authors Lastname:"
-               Grid.Row="1"
-               Height="25"
-               Margin="10,53,10,54"
-               HorizontalContentAlignment="Right" />
-        <TextBox x:Name="LastNameTB"
-                 Grid.Row="1"
-                 Grid.Column="1"
-                 Height="25"
-                 Margin="10,53,30,53"
-                 Grid.ColumnSpan="3" />
-        <Label Content="Authors Birthdate:"
                Grid.Row="2"
                Height="25"
-               Margin="10,10,10,100"
+               Margin="10,10,10,10"
+               HorizontalContentAlignment="Right" />
+        <TextBox x:Name="LastNameTB"
+                 Grid.Row="2"
+                 Grid.Column="1"
+                 Height="25"
+                 Margin="10,10,10,10"
+                 Grid.ColumnSpan="3" />
+        <Label Content="Authors Birthdate:"
+               Grid.Row="3"
+               Height="25"
+               Margin="10,10,10,10"
                HorizontalContentAlignment="Right" />
 
-        <ComboBox Name="YearComboBox"
-                  HorizontalAlignment="Left"
-                  VerticalAlignment="Top"
-                  Width="70"
-                  Margin="20,10,10,10"
-                  Grid.Column="1"
-                  Grid.Row="2"
-                  Grid.ColumnSpan="2" />
-        <ComboBox Name="MonthComboBox"
-                  HorizontalAlignment="Left"
-                  VerticalAlignment="Top"
-                  Width="80"
-                  Margin="10,10,10,10"
-                  Grid.Column="2"
-                  Grid.Row="2"
-                  Grid.ColumnSpan="2" />
-        <ComboBox Name="DayComboBox"
-                  HorizontalAlignment="Left"
-                  VerticalAlignment="Top"
-                  Width="50"
-                  Margin="10,10,10,10"
-                  Grid.Column="3"
-                  Grid.Row="2"
-                  Grid.ColumnSpan="2" />
-
-
-
+        <Grid Grid.Column="2"
+              Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <ComboBox Name="YearComboBox"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      Width="40"
+                      Margin="1, 25"
+                      Grid.Column="0" />
+            <ComboBox Name="MonthComboBox"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      Width="40"
+                      Margin="1, 25"
+                      Grid.Column="1" />
+            <ComboBox Name="DayComboBox"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      Width="40"
+                      Margin="1, 25"
+                      Grid.Column="3"
+                      Grid.Row="2" />
+        </Grid>
         <Button x:Name="SaveBTN"
                 Content="Save"
-                Grid.Row="3"
+                Grid.Row="4"
                 Grid.Column="0"
-                Margin="30,50,30,50" />
+                Margin="10,20" />
         <Button x:Name="CancelBTN"
                 Content="Cancel"
-                Grid.Row="3"
+                Grid.Row="4"
                 Grid.Column="1"
-                Margin="30,50,30,50" />
-
-
+                Margin="10,20" />
 
     </Grid>
 </Window>

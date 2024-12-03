@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DB_Labb2.Model;
 
 namespace DB_Labb2
 {
@@ -19,6 +20,9 @@ namespace DB_Labb2
         public MainWindow()
         {
             InitializeComponent();
+            using var db = new BookstoreContext();
+
+            db.Database.EnsureCreated(); //enbart för testning
         }
     }
 }
