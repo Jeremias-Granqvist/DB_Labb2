@@ -9,6 +9,7 @@ namespace DB_Labb2
     /// </summary>
     public partial class App : Application
     {
+
     }
 
 }

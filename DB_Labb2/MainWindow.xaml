@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DB_Labb2"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow"
+        Height="450"
+        Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition x:Name="MenuRow"
@@ -17,36 +19,48 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Menu >
+        <Menu>
             <MenuItem Header="Main" />
             <MenuItem Header="Settings" />
             <MenuItem Header="Help" />
         </Menu>
-        <TreeView x:Name="MenuTV"
-                  Grid.Column="0"
-                  Grid.Row="2"
-                  Grid.RowSpan="2"
-                  Margin="10,-60,10,20">
-        </TreeView>
-        
+
         <TextBox x:Name="SearchTB"
+                 Grid.Column="0"
                  Grid.Row="1"
-                 Grid.Column="1"
-                 Margin="20,30,300,30"
+                 Margin="100,30,30,30"
+                 FontStyle="Italic"
                  Text="Search Here" />
         <Button x:Name="SearchBTN"
                 Content="Search"
-                Grid.Row="1"
                 Grid.Column="1"
-                Margin="250,30,150,30"
-                />
-        <DataGrid x:Name="ResultGrid"
-                  Grid.Row="3"
-                  Grid.Column="1"
-                  Margin="50,20,50,20">
-            
-        </DataGrid>
+                Grid.Row="1"
+                Margin="30,30,200,30" />
+
+        <TabControl Grid.Row="2"
+                    Grid.ColumnSpan="2"
+                    Margin="10,10,10,10"
+                    BorderThickness="2">
+            <TabItem x:Name="Authors"
+                     Header="Authors">
+                <DataGrid x:Name="AuthorDataGrid"
+                          AutoGenerateColumns="True"
+                          Margin="5,5" />
+
+            </TabItem>
+            <TabItem x:Name="Books"
+                     Header="Books">
+                <DataGrid x:Name="BooksDataGrid"
+                          AutoGenerateColumns="True"
+                          Margin="5,5" />
+            </TabItem>
+            <TabItem x:Name="Inventory"
+                     Header="Inventory">
+                <DataGrid x:Name="InventoryDataGrid"
+                          Margin="5,5" />
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
