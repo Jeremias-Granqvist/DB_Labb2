@@ -58,11 +58,6 @@ public partial class BookstoreContext : DbContext
         //        );
 
 
-
-
-        modelBuilder.Entity<Book>()
-                    .Property(b => b.ISBN13);
-
         modelBuilder.Entity<Book>()
                     .HasKey(b => b.ISBN13);
 
@@ -79,6 +74,10 @@ public partial class BookstoreContext : DbContext
         modelBuilder.Entity<Book>()
                     .Property(b => b.Title)
                     .HasMaxLength(255);
+       
+        modelBuilder.Entity<Book>()
+                    .Property(b => b.Language)
+                    .HasMaxLength(50);
 
         modelBuilder.Entity<Book>()
                     .Property(b => b.ReleaseDate)

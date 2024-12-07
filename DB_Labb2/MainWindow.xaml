@@ -23,7 +23,14 @@
         </Grid.ColumnDefinitions>
         <Menu>
             <MenuItem Header="Main" />
-            <MenuItem Header="Settings" />
+            <MenuItem Header="Settings">
+                <MenuItem Header="Add Author" 
+                          Click="MenuItem_Click"/>
+                <MenuItem Header="Alter Author" />
+                <MenuItem Header="Add Book" />
+                <MenuItem Header="Alter Book" />
+            </MenuItem>
+            
             <MenuItem Header="Help" />
         </Menu>
 

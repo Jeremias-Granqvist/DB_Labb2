@@ -3,11 +3,24 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:DB_Labb2.Dialogs"
+        xmlns:model="clr-namespace:DB_Labb2.Model"
         mc:Ignorable="d"
         Title="AddAuthorDiaglog"
-        Height="400"
-        Width="300">
+        Height="500"
+        Width="400">
+
+    <Window.Resources>
+        <ObjectDataProvider x:Key="EnumMonths"
+                            ObjectType="{x:Type sys:Enum}"
+                            MethodName="GetValues">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="model:Months" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -17,7 +30,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Label Content="Add new Author"
@@ -52,45 +65,51 @@
                Grid.Row="3"
                Height="25"
                Margin="10,10,10,10"
-               HorizontalContentAlignment="Right" />
+               HorizontalContentAlignment="center" />
 
         <Grid Grid.Column="2"
               Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="2*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <ComboBox Name="YearComboBox"
-                      HorizontalAlignment="Left"
-                      VerticalAlignment="Top"
-                      Width="40"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Width="60"
                       Margin="1, 25"
-                      Grid.Column="0" />
+                      Grid.Column="0"
+                      SelectionChanged="YearComboBox_SelectionChanged"/>
             <ComboBox Name="MonthComboBox"
-                      HorizontalAlignment="Left"
-                      VerticalAlignment="Top"
-                      Width="40"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Width="80"
                       Margin="1, 25"
-                      Grid.Column="1" />
+                      Grid.Column="1" 
+                      ItemsSource="{Binding Months}"
+                      SelectionChanged="MonthComboBox_SelectionChanged"/>
             <ComboBox Name="DayComboBox"
-                      HorizontalAlignment="Left"
-                      VerticalAlignment="Top"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
                       Width="40"
                       Margin="1, 25"
                       Grid.Column="3"
-                      Grid.Row="2" />
+                      Grid.Row="2" 
+                      ItemsSource="{Binding daysInMonth}"/>
         </Grid>
         <Button x:Name="SaveBTN"
                 Content="Save"
                 Grid.Row="4"
                 Grid.Column="0"
-                Margin="10,20" />
+                Margin="65,20,226,20"
+                Grid.ColumnSpan="2"
+                Click="SaveBTN_Click" />
         <Button x:Name="CancelBTN"
                 Content="Cancel"
                 Grid.Row="4"
                 Grid.Column="1"
-                Margin="10,20" />
+                Margin="80,20,80,20" />
 
     </Grid>
 </Window>
