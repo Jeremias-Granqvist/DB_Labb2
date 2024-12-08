@@ -87,7 +87,7 @@
                       Width="80"
                       Margin="1, 25"
                       Grid.Column="1" 
-                      ItemsSource="{Binding Months}"
+                      ItemsSource="{Binding Source={StaticResource EnumMonths} }"
                       SelectionChanged="MonthComboBox_SelectionChanged"/>
             <ComboBox Name="DayComboBox"
                       HorizontalAlignment="Center"

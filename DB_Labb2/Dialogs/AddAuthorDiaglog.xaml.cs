@@ -21,9 +21,7 @@ namespace DB_Labb2.Dialogs
     /// </summary>
     public partial class AddAuthorDiaglog : Window
     {
-        public List<Months> Months { get; }
         public int Year;
-
         public string Firstname => FirstNameTB.Text;
         public string Lastname => LastNameTB.Text;
         //public DateTime? Birthdate => BirthdatePicker.SelectedDate; Behöver implementeras!!!!
@@ -31,7 +29,6 @@ namespace DB_Labb2.Dialogs
         {
             InitializeComponent();
             DataContext = this;
-            Months = Enum.GetValues(typeof(Months)).Cast<Months>().ToList();
             YearComboBox.ItemsSource = Enumerable.Range(1455, DateTime.UtcNow.Year - 1455).Reverse().ToList();
         }
 
@@ -74,7 +71,24 @@ namespace DB_Labb2.Dialogs
                 MessageBox.Show("Please fill out all fields.");
                 return;
             }
-            this.DialogResult = true;
+
+            Months selectedMonth = (Months)MonthComboBox.SelectedItem;
+            int monthValue = (int) selectedMonth;
+
+            Author addAuthor = new Author
+            {
+                Firstname = FirstNameTB.Text,
+                Lastname = LastNameTB.Text,
+                
+                Birthdate = DateTime.Parse(YearComboBox.Text.ToString() + "-" + monthValue.ToString() + "-" + DayComboBox.Text.ToString())
+            };
+
+            using (var context = new BookstoreContext())
+            {
+                context.Add(addAuthor);
+                context.SaveChanges();
+                
+            }
             this.Close();
         }
     }

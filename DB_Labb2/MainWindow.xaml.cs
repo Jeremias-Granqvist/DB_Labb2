@@ -40,18 +40,7 @@ namespace DB_Labb2
             var AddAuthor = new AddAuthorDiaglog();
             AddAuthor.Show();
             AddAuthor.YearComboBox.ItemsSource = Enumerable.Range(1455, DateTime.UtcNow.Year - 1455).Reverse().ToList();
-            
-            if (AddAuthor.ShowDialog() == true)
-            {
-                Author newAuthor = new Author
-                {
-                    Firstname = AddAuthor.Firstname,
-                    Lastname = AddAuthor.Lastname
-                    //implement , Birthdate = addAuthor.Birthdate.value
-                };
 
-                MessageBox.Show($"New author added to database: {newAuthor.Firstname} {newAuthor.Lastname} Birthdate {newAuthor.Birthdate}"); //implement birthdate!!! maybe newauthor.birthdate.toshortdatestring()
-            }
         }
     }
 }
