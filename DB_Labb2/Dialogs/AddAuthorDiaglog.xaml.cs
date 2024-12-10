@@ -10,7 +10,7 @@ namespace DB_Labb2.Dialogs
 {
     public partial class AddAuthorDiaglog : Window, INotifyPropertyChanged
     {
-        MainWindow main;
+        private MainWindow _mainWindow;
         public int Year;
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -20,12 +20,12 @@ namespace DB_Labb2.Dialogs
         }
         public string Firstname => FirstNameTB.Text;
         public string Lastname => LastNameTB.Text;
-        public AddAuthorDiaglog()
+        public AddAuthorDiaglog(MainWindow mainWindow)
         {
             InitializeComponent();
             DataContext = this;
             YearComboBox.ItemsSource = Enumerable.Range(1455, DateTime.UtcNow.Year - 1455).Reverse().ToList();
-            main = new MainWindow();
+            _mainWindow = mainWindow;
             
         }
 
@@ -82,7 +82,7 @@ namespace DB_Labb2.Dialogs
                 context.Add(addAuthor);
                 context.SaveChanges();
 
-                main.AddAuthorToOC(addAuthor);
+                _mainWindow.AddAuthorToOC(addAuthor);
 
                 RaisePropertyChanged("authors");          
             }

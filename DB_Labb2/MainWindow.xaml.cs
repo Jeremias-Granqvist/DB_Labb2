@@ -21,8 +21,8 @@ namespace DB_Labb2
             DataContext = this;
 
         }
-        public ObservableCollection<Author> authors = new ObservableCollection<Author>();
-
+        public ObservableCollection<Author> authors { get; set; } = new ObservableCollection<Author>();
+        public ObservableCollection<Book> books { get; set; } = new ObservableCollection<Book>();
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -44,7 +44,7 @@ namespace DB_Labb2
             authors = new ObservableCollection<Author>(db.Authors);
             AuthorDataGrid.ItemsSource = authors;
 
-            var books = db.Books.ToList();
+            books = new ObservableCollection<Book>(db.Books);
             BooksDataGrid.ItemsSource = books;
 
             RaisePropertyChanged("authors");
@@ -54,7 +54,7 @@ namespace DB_Labb2
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            var AddAuthor = new AddAuthorDiaglog();
+            var AddAuthor = new AddAuthorDiaglog(this);
             AddAuthor.Show();
             AddAuthor.YearComboBox.ItemsSource = Enumerable.Range(1455, DateTime.UtcNow.Year - 1455).Reverse().ToList();
 
