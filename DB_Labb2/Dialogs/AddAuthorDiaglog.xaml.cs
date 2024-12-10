@@ -1,39 +1,35 @@
 ﻿using DB_Labb2.Model;
-using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
 
 namespace DB_Labb2.Dialogs
 {
-    /// <summary>
-    /// Interaction logic for AddAuthorDiaglog.xaml
-    /// </summary>
-    public partial class AddAuthorDiaglog : Window
+    public partial class AddAuthorDiaglog : Window, INotifyPropertyChanged
     {
+        MainWindow main;
         public int Year;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        public void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         public string Firstname => FirstNameTB.Text;
         public string Lastname => LastNameTB.Text;
-        //public DateTime? Birthdate => BirthdatePicker.SelectedDate; Behöver implementeras!!!!
         public AddAuthorDiaglog()
         {
             InitializeComponent();
             DataContext = this;
             YearComboBox.ItemsSource = Enumerable.Range(1455, DateTime.UtcNow.Year - 1455).Reverse().ToList();
+            main = new MainWindow();
+            
         }
 
         public List<int> Years { get; }
-
 
         private void YearComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -78,16 +74,17 @@ namespace DB_Labb2.Dialogs
             Author addAuthor = new Author
             {
                 Firstname = FirstNameTB.Text,
-                Lastname = LastNameTB.Text,
-                
+                Lastname = LastNameTB.Text,  
                 Birthdate = DateTime.Parse(YearComboBox.Text.ToString() + "-" + monthValue.ToString() + "-" + DayComboBox.Text.ToString())
             };
-
             using (var context = new BookstoreContext())
             {
                 context.Add(addAuthor);
                 context.SaveChanges();
-                
+
+                main.AddAuthorToOC(addAuthor);
+
+                RaisePropertyChanged("authors");          
             }
             this.Close();
         }

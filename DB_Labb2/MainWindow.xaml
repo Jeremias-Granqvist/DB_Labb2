@@ -50,20 +50,20 @@
                     Grid.ColumnSpan="2"
                     Margin="10,10,10,10"
                     BorderThickness="2">
-            <TabItem x:Name="Authors"
+            <TabItem x:Name="AuthorsTabControl"
                      Header="Authors">
                 <DataGrid x:Name="AuthorDataGrid"
                           AutoGenerateColumns="True"
-                          Margin="5,5" />
+                          Margin="5,5"/>
 
             </TabItem>
-            <TabItem x:Name="Books"
+            <TabItem x:Name="BooksTabControl"
                      Header="Books">
                 <DataGrid x:Name="BooksDataGrid"
                           AutoGenerateColumns="True"
                           Margin="5,5" />
             </TabItem>
-            <TabItem x:Name="Inventory"
+            <TabItem x:Name="InventoryTabControl"
                      Header="Inventory">
                 <DataGrid x:Name="InventoryDataGrid"
                           Margin="5,5" />
