@@ -16,4 +16,15 @@
         December = 12
     }
 
+    public enum Language
+    {
+        Swedish,
+        English,
+        Norwegian,
+        Latin,
+        Danish,
+        Finnish,
+        Other
+    }
+
 }

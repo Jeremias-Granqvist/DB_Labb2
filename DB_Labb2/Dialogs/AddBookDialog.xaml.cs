@@ -23,5 +23,10 @@ namespace DB_Labb2.Dialogs
         {
             InitializeComponent();
         }
+
+        private void TitleTB_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }

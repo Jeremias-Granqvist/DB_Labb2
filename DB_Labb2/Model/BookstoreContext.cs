@@ -62,16 +62,6 @@ public partial class BookstoreContext : DbContext
                     .HasKey(b => b.ISBN13);
 
         modelBuilder.Entity<Book>()
-                    .HasOne(b => b.Publisher)
-                    .WithMany(p => p.Books)
-                    .HasForeignKey(b => b.PublisherID);
-
-        modelBuilder.Entity<Book>()
-                    .HasOne(b => b.Format)
-                    .WithMany(f => f.Books)
-                    .HasForeignKey(b => b.FormatID);
-
-        modelBuilder.Entity<Book>()
                     .Property(b => b.Title)
                     .HasMaxLength(255);
        

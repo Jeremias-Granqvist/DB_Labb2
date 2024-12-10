@@ -12,17 +12,11 @@ public class Book
 {
     public long ISBN13 { get; set; }
     public string? Title { get; set; }
-
     public int Price { get; set; }
-
     public string? Language { get; set; }
 
     [Column("Release Date")]
     public DateTime ReleaseDate { get; set; }
-    public Publisher? Publisher { get; set; }
-    public int PublisherID { get; set; }
-    public Format? Format { get; set; }
-    public int FormatID { get; set; }
 
     public ICollection<Author> Authors { get; set; } = new List<Author>();
 
