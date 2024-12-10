@@ -29,8 +29,6 @@ namespace DB_Labb2.Dialogs
             
         }
 
-        public List<int> Years { get; }
-
         private void YearComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Year = (int)YearComboBox.SelectedItem;

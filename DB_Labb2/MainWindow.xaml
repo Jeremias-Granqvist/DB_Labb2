@@ -24,10 +24,11 @@
         <Menu>
             <MenuItem Header="Main" />
             <MenuItem Header="Settings">
-                <MenuItem Header="Add Author" 
-                          Click="MenuItem_Click"/>
+                <MenuItem Header="Add Author"
+                          Click="AddAuthor_Click"/>
                 <MenuItem Header="Alter Author" />
-                <MenuItem Header="Add Book" />
+                <MenuItem Header="Add Book"
+                          Click="AddBook_Click"/>
                 <MenuItem Header="Alter Book" />
             </MenuItem>
             

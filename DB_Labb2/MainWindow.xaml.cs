@@ -52,23 +52,25 @@ namespace DB_Labb2
             
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+
+
+        public void AddAuthorToOC(Author author)
+        {
+            authors.Add(author);
+        }
+
+        private void AddAuthor_Click(object sender, RoutedEventArgs e)
         {
             var AddAuthor = new AddAuthorDiaglog(this);
             AddAuthor.Show();
             AddAuthor.YearComboBox.ItemsSource = Enumerable.Range(1455, DateTime.UtcNow.Year - 1455).Reverse().ToList();
 
         }
-
-        public void AddAuthorToOC(Author author)
+        private void AddBook_Click(object sender, RoutedEventArgs e)
         {
-            //SetDataGrids();
-
-            authors.Add(author);
-            //RaisePropertyChanged("authors");
-
-            //AuthorDataGrid.ItemsSource = null;
-            //AuthorDataGrid.ItemsSource = authors;
+            var AddBook = new AddBookDialog(this);
+            AddBook.Show();
+            AddBook.YearComboBox.ItemsSource = Enumerable.Range(1455, DateTime.UtcNow.Year - 1455).Reverse().ToList();
         }
     }
 }
