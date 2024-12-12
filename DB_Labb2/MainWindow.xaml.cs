@@ -1,76 +1,93 @@
 ﻿
-using System.Windows;
-using Microsoft.EntityFrameworkCore;
-using DB_Labb2.Model;
 using DB_Labb2.Dialogs;
-using System.Windows.Input;
-using DB_Labb2.Command;
+using DB_Labb2.Model;
+using DB_Labb2.viewModel;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Collections.Specialized;
+using System.Windows;
 
-namespace DB_Labb2
+namespace DB_Labb2;
+
+public partial class MainWindow : Window, INotifyPropertyChanged
 {
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public MainWindow()
     {
-        public MainWindow()
+        InitializeComponent();
+        Loaded += MainWindow_Loaded;
+        var viewModel = new MainViewModel();
+        DataContext = viewModel;
+
+    }
+
+    public ObservableCollection<Author> authors { get; set; } = new ObservableCollection<Author>();
+    public ObservableCollection<Book> books { get; set; } = new ObservableCollection<Book>();
+
+
+
+
+    private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+    {
+        SetDataGrids();
+        LoadCloseWindows();
+
+    }
+
+    private void LoadCloseWindows()
+    {
+        if (DataContext is ICloseWindows vm)
         {
-            InitializeComponent();
-            Loaded += MainWindow_Loaded;
-            DataContext = this;
-
+                vm.Close = new Action(this.Close); 
         }
-        public ObservableCollection<Author> authors { get; set; } = new ObservableCollection<Author>();
-        public ObservableCollection<Book> books { get; set; } = new ObservableCollection<Book>();
+    }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+    private void SetDataGrids()
+    {
 
-        public void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
+        using var db = new BookstoreContext();
+
+        authors = new ObservableCollection<Author>(db.Authors);
+        AuthorDataGrid.ItemsSource = authors;
+
+        books = new ObservableCollection<Book>(db.Books);
+        BooksDataGrid.ItemsSource = books;
+
+        RaisePropertyChanged("authors");
+        RaisePropertyChanged("books");
+
+    }
+
+    public void AddAuthorToOC(Author author)
+    {
+        authors.Add(author);
+    }
+
+    private void AddAuthor_Click(object sender, RoutedEventArgs e)
+    {
+
+        var AddAuthor = new AddAuthorDialog(new AddAuthorDialogViewModel());
+        AddAuthor.DataContext = new AddAuthorDialogViewModel();
+
+        if (AddAuthor.DataContext is ICloseWindows dialogViewModel)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            dialogViewModel.Close = new Action(AddAuthor.Close);
         }
+        AddAuthor.Show();
+        AddAuthor.YearComboBox.ItemsSource = Enumerable.Range(1455, DateTime.UtcNow.Year - 1455).Reverse().ToList();
 
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            SetDataGrids();
-        }
-
-        private void SetDataGrids()
-        {
-            
-            using var db = new BookstoreContext();
-
-            authors = new ObservableCollection<Author>(db.Authors);
-            AuthorDataGrid.ItemsSource = authors;
-
-            books = new ObservableCollection<Book>(db.Books);
-            BooksDataGrid.ItemsSource = books;
-
-            RaisePropertyChanged("authors");
-            RaisePropertyChanged("authors");
-            
-        }
+    }
+    private void AddBook_Click(object sender, RoutedEventArgs e)
+    {
+        var AddBook = new AddBookDialog(this);
+        AddBook.Show();
+        AddBook.YearComboBox.ItemsSource = Enumerable.Range(1455, DateTime.UtcNow.Year - 1455).Reverse().ToList();
+    }
 
 
 
-        public void AddAuthorToOC(Author author)
-        {
-            authors.Add(author);
-        }
-
-        private void AddAuthor_Click(object sender, RoutedEventArgs e)
-        {
-            var AddAuthor = new AddAuthorDiaglog(this);
-            AddAuthor.Show();
-            AddAuthor.YearComboBox.ItemsSource = Enumerable.Range(1455, DateTime.UtcNow.Year - 1455).Reverse().ToList();
-
-        }
-        private void AddBook_Click(object sender, RoutedEventArgs e)
-        {
-            var AddBook = new AddBookDialog(this);
-            AddBook.Show();
-            AddBook.YearComboBox.ItemsSource = Enumerable.Range(1455, DateTime.UtcNow.Year - 1455).Reverse().ToList();
-        }
+    public event PropertyChangedEventHandler? PropertyChanged;
+    public void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

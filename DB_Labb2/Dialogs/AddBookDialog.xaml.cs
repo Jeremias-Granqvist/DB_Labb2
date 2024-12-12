@@ -37,7 +37,7 @@ namespace DB_Labb2.Dialogs
         public AddBookDialog(MainWindow mainWindow)
         {
             InitializeComponent();
-            DataContext = this;
+            this.DataContext = mainWindow.DataContext;
             YearComboBox.ItemsSource = Enumerable.Range(1455, DateTime.UtcNow.Year - 1455).Reverse().ToList();
             _mainWindow = mainWindow;
         }
