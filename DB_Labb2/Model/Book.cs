@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DB_Labb2.Model;
-public class Book
+public class Book : ModelBase
 {
     public long ISBN13 { get; set; }
     public string? Title { get; set; }
@@ -16,7 +16,7 @@ public class Book
     public string? Language { get; set; }
 
     [Column("Release Date")]
-    public DateTime ReleaseDate { get; set; }
+    public DateOnly ReleaseDate { get; set; }
 
     public ICollection<Author> Authors { get; set; } = new List<Author>();
 

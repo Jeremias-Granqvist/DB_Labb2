@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DB_Labb2.Model
 {
-    public class Publisher
+    public class Publisher : ModelBase
     {
         public int PublisherID { get; set; }
         [Column("Publisher Name")]

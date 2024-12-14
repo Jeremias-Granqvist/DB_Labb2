@@ -8,6 +8,7 @@
         xmlns:model="clr-namespace:DB_Labb2.Model"
         xmlns:datacontext="clr-namespace:DB_Labb2.viewModel"
         mc:Ignorable="d"
+        ResizeMode="NoResize"
         Title="AddAuthorDialog"
         Height="500"
         Width="400"
@@ -22,9 +23,7 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </Window.Resources>
-    <Window.DataContext>
-        <datacontext:AddAuthorDialogViewModel />
-    </Window.DataContext>
+
     
     <Grid>
         <Grid.RowDefinitions>
@@ -105,6 +104,7 @@
                       Grid.Row="2"
                       ItemsSource="{Binding DayComboBoxItemsSource}"
                       SelectedItem="{Binding Day}"/>
+
         </Grid>
         <Button x:Name="SaveBTN"
                 Content="Save"
@@ -112,13 +112,14 @@
                 Grid.Column="0"
                 Margin="65,20,226,20"
                 Grid.ColumnSpan="2"
-                Command="{Binding SaveCommand}"/>
+                Command="{Binding AddAuthorCommand}" />
+
         <Button x:Name="CancelBTN"
                 Content="Cancel"
                 Grid.Row="4"
                 Grid.Column="1"
                 Margin="80,20,80,20"
-                Command="{Binding PressCancelButtonCommand}"/>
+                Command="{Binding CancelButtonCommand}" />
 
     </Grid>
 </Window>

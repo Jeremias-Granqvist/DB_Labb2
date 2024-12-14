@@ -6,10 +6,12 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:DB_Labb2.Dialogs"
         xmlns:model="clr-namespace:DB_Labb2.Model"
+        xmlns:datacontext="clr-namespace:DB_Labb2.viewModel"
         mc:Ignorable="d"
+        ResizeMode="NoResize"
         Title="AddBookDialog"
         Height="400"
-        Width="400">
+        Width="500">
     <Window.Resources>
         <ObjectDataProvider x:Key="EnumMonths"
                             ObjectType="{x:Type sys:Enum}"
@@ -36,119 +38,168 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Label Content="Add new Book"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Center"
-               Grid.ColumnSpan="3"
-               FontSize="22" />
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               HorizontalContentAlignment="Center"
+               Grid.ColumnSpan="2"
+               FontSize="22"
+               Width="200"
+               Grid.Column="1"
+               Margin="50,15,0,0" />
 
         <Label Content="ISBN13:"
                Grid.Row="1"
                Height="25"
                Width="50"
-               Margin="10,10,10,10" />
+               Margin="10,10,10,10"
+               HorizontalContentAlignment="Right" />
         <TextBox x:Name="ISBN13TB"
                  Grid.Row="1"
                  Height="25"
                  Width="100"
                  Grid.Column="1"
-                 Margin="10,26,40,26" />
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Text="{Binding ISBN13}" />
 
         <Label Content="Price:"
                Grid.Row="1"
                Grid.Column="2"
                Height="25"
-                Width="40"
-               HorizontalContentAlignment="Right"
-                />
+               Width="40"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Margin="80,10,10,10"
+               HorizontalContentAlignment="Right" />
         <TextBox x:Name="PriceTB"
                  Grid.Row="1"
                  Height="25"
-                 Margin="10,10,10,10"
-                 Grid.Column="3" />
+                 Width="50"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Grid.Column="3"
+                 Text="{Binding Price}" />
 
         <Label Content="Title:"
                Grid.Row="2"
                Grid.Column="0"
                Height="25"
                Width="50"
-               Margin="10,10,10,10"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
                HorizontalContentAlignment="Right" />
         <TextBox x:Name="TitleTB"
                  Grid.Row="2"
                  Grid.Column="1"
                  Width="150"
-                 Height="25" />
+                 Height="25"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Text="{Binding Title}" />
 
         <Label Content="Language: "
                Height="30"
                Width="65"
                Grid.Row="2"
-               Grid.Column="2" />
+               Grid.Column="2"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Margin="50,10,0,10" />
+
         <ComboBox x:Name="LanguageComboBox"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
-                  Width="60"
+                  Width="80"
                   Grid.Column="3"
-                  Grid.Row="2" />
+                  Grid.Row="2"
+                  Margin="10,10,10,10"
+                  ItemsSource="{Binding Source={StaticResource EnumLanguage}}"
+                  SelectedItem="{Binding Language}" />
 
         <Label Content="Release Date:"
                Grid.Row="3"
                Height="25"
                Width="80"
-               Margin="1,1,1,1"
-               HorizontalContentAlignment="center" />
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               HorizontalContentAlignment="Right" />
 
-        <ComboBox Name="YearComboBox"
-                  HorizontalAlignment="Left"
-                  VerticalAlignment="Top"
+        <ComboBox x:Name="YearComboBox"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
                   Width="60"
                   Grid.Column="1"
-                  Margin="5,30,0,0"
+                  Margin="10,10,60,10"
                   Grid.Row="3"
-                  RenderTransformOrigin="0.506,1.112" />
+                  SelectedItem="{Binding Year}" />
         <ComboBox Name="MonthComboBox"
-                  HorizontalAlignment="Left"
-                  VerticalAlignment="Top"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
                   Width="80"
                   Grid.Row="3"
                   Grid.Column="1"
-                  Margin="85,30,0,0"
+                  Margin="10,10,30,10"
                   Grid.ColumnSpan="2"
-                  ItemsSource="{Binding Source={StaticResource EnumMonths} }" />
+                  ItemsSource="{Binding Source={StaticResource EnumMonths} }"
+                  SelectedItem="{Binding Month}" />
         <ComboBox Name="DayComboBox"
-                  HorizontalAlignment="Left"
-                  VerticalAlignment="Top"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
                   Width="40"
                   Grid.Column="2"
                   Grid.Row="3"
-                  Margin="40,30,0,0" />
+                  Margin="10,10,10,10"
+                  ItemsSource="{Binding DayComboBoxItemsSource}"
+                  SelectedItem="{Binding Day}" />
+
+        <Label Content="Author:"
+               Grid.Row="4"
+               Height="25"
+               Width="80"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               HorizontalContentAlignment="Right" />
+
+        <ComboBox Name="AuthorComboBox"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Width="200"
+                  Grid.Column="1"
+                  Grid.Row="4"
+                  Margin="10,10,10,10"
+                  Grid.ColumnSpan="2"
+                  ItemsSource="{Binding Authors}"
+                  DisplayMemberPath="FullName" 
+                  SelectedValuePath="AuthorID"
+                  />
 
         <Button x:Name="SaveBTN"
                 Content="Save"
-                Grid.Row="4"
+                Grid.Row="5"
+                Grid.Column="1"
                 Height="50"
                 Width="100"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Grid.ColumnSpan="2" />
+                Command="{Binding AddBookCommand}" />
         <Button x:Name="CancelBTN"
                 Content="Cancel"
-                Grid.Row="4"
+                Grid.Row="5"
                 Grid.Column="2"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Height="50"
-                Width="100" 
-                Grid.RowSpan="3"
-                Command="{Binding PressCancelButtonCommand}"/>
+                Width="100"
+                Command="{Binding CancelButtonCommand}" />
 
     </Grid>
 </Window>

@@ -4,10 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DB_Labb2"
+        xmlns:viewmodel ="clr-namespace:DB_Labb2.viewModel"
         mc:Ignorable="d"
         Title="MainWindow"
         Height="450"
         Width="800">
+    <Window.DataContext>
+        <viewmodel:MainViewModel />
+    </Window.DataContext>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition x:Name="MenuRow"
@@ -23,15 +28,17 @@
         </Grid.ColumnDefinitions>
         <Menu>
             <MenuItem Header="Main" />
-            <MenuItem Header="Settings">
+            <MenuItem Header="Author">
                 <MenuItem Header="Add Author"
-                          Click="AddAuthor_Click"/>
-                <MenuItem Header="Alter Author" />
-                <MenuItem Header="Add Book"
-                          Click="AddBook_Click"/>
-                <MenuItem Header="Alter Book" />
+                          Command="{Binding AddAuthorCommand}"/>
+                <MenuItem Header="Edit Author" 
+                          Command="{Binding AlterAuthorCommand}"/>
             </MenuItem>
-            
+            <MenuItem Header="Books">
+                <MenuItem Header="Add Book"
+                          Command="{Binding AddBookCommand}"/>
+                <MenuItem Header="Edit Book" />
+            </MenuItem>
             <MenuItem Header="Help" />
         </Menu>
 
@@ -54,13 +61,26 @@
             <TabItem x:Name="AuthorsTabControl"
                      Header="Authors">
                 <DataGrid x:Name="AuthorDataGrid"
-                          AutoGenerateColumns="True"
-                          Margin="5,5"/>
+                          AutoGenerateColumns="false"
+                          ItemsSource="{Binding Authors}"
+                          Margin="5,5">
+                    <DataGrid.Columns>
+                    <DataGridTextColumn Header="AuthorID"
+                                        Binding="{Binding AuthorID}" />
+                    <DataGridTextColumn Header="Firstname"
+                                        Binding="{Binding Firstname}" />
+                    <DataGridTextColumn Header="Lastname"
+                                        Binding="{Binding Lastname}" />
+                    <DataGridTextColumn Header="Birthdate"
+                                        Binding="{Binding Birthdate}" />
+                    </DataGrid.Columns>
+                </DataGrid>
 
             </TabItem>
             <TabItem x:Name="BooksTabControl"
                      Header="Books">
                 <DataGrid x:Name="BooksDataGrid"
+                          ItemsSource="{Binding Books}"
                           AutoGenerateColumns="True"
                           Margin="5,5" />
             </TabItem>

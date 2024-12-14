@@ -38,26 +38,6 @@ public partial class BookstoreContext : DbContext
     {
         modelBuilder.UseCollation("Finnish_Swedish_CI_AS");
 
-        //modelBuilder.Entity<Book>()
-        //        .HasMany(b => b.Authors)
-        //        .WithMany(a => a.Books)
-        //        .UsingEntity<BookAuthor>(
-        //            j => j
-        //                .HasOne(ba => ba.Author)
-        //                .WithMany()
-        //                .HasForeignKey(ba => ba.AuthorID),
-        //            j => j
-        //                .HasOne(ba => ba.Book)
-        //                .WithMany()
-        //                .HasForeignKey(ba => ba.ISBN13),
-        //            j =>
-        //            {
-        //                j.HasKey(ba => new { ba.ISBN13, ba.AuthorID });
-        //                j.ToTable("BookAuthor");
-        //            }
-        //        );
-
-
         modelBuilder.Entity<Book>()
                     .HasKey(b => b.ISBN13);
 
@@ -71,18 +51,10 @@ public partial class BookstoreContext : DbContext
 
         modelBuilder.Entity<Book>()
                     .Property(b => b.ReleaseDate)
-                    .HasConversion(
-                        v => v.Date,
-                        v => v
-                        );
-
+;
 
         modelBuilder.Entity<Author>()
-                    .Property(a => a.Birthdate)
-                    .HasConversion(
-                        v => v.Date,
-                        v => v
-                        );
+                    .Property(a => a.Birthdate);
         modelBuilder.Entity<Author>()
                     .HasKey(a => a.AuthorID);
 

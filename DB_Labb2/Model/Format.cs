@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DB_Labb2.Model
 {
-    public class Format
+    public class Format : ModelBase
     {
         public int FormatID { get; }
         public string FormatTyp { get; set; }

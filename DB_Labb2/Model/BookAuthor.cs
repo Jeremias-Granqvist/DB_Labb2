@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DB_Labb2.Model
 {
-    public class BookAuthor
+    public class BookAuthor : ModelBase
     {
         public int ISBN13 { get; set; }
         public int AuthorID { get; set; }

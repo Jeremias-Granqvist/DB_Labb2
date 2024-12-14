@@ -1,33 +1,31 @@
 ﻿using DB_Labb2.Command;
-using DB_Labb2.Dialogs;
 using DB_Labb2.Model;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace DB_Labb2.viewModel;
 
-public class AddAuthorDialogViewModel : ModelBase
+public class AddAuthorDialogViewModel : ModelBase, ICloseWindows
 {
-    public event EventHandler<Author> AuthorAdded;
-    public AddAuthorDialogViewModel()
+
+    private AuthorManager _authorManager;
+    public AddAuthorDialogViewModel(AuthorManager authorManager)
     {
-        SaveCommand = new DelegateCommand(SaveAuthor);
+        _authorManager = authorManager;
+        AddAuthorCommand = new DelegateCommand(OnAddAuthor);
+        CancelButtonCommand = new DelegateCommand(OnCancelClick);
     }
-    public ICommand SaveCommand { get; }
 
 
+    public ICommand CancelButtonCommand { get; }
+    public ICommand AddAuthorCommand { get; }
+    public Action Close { get; set; }
 
-
-
+    private void OnCancelClick(object obj)
+    {
+        Close?.Invoke();
+    }
 
 
     private string _firstname;
@@ -72,6 +70,7 @@ public class AddAuthorDialogViewModel : ModelBase
             _month = value;
             RaisePropertyChanged();
             UpdateDaysInMonth();
+            RaisePropertyChanged();
             RaisePropertyChanged("DayComboBoxItemsSource");
         }
     }
@@ -87,15 +86,14 @@ public class AddAuthorDialogViewModel : ModelBase
         }
     }
 
-    private List<int> _dayComboBoxItemsSource;
-    public List<int> DayComboBoxItemsSource
+    private ObservableCollection<int> _dayComboBoxItemsSource;
+    public ObservableCollection<int> DayComboBoxItemsSource
     {
         get => _dayComboBoxItemsSource;
         set
         {
             _dayComboBoxItemsSource = value;
-            RaisePropertyChanged("DayComboBoxItemsSource");
-
+            RaisePropertyChanged();
         }
     }
 
@@ -105,9 +103,8 @@ public class AddAuthorDialogViewModel : ModelBase
         if (Month is Months selectedMonth)
         {
             int daysInMonth = GetDaysInMonth(selectedMonth, Year);
-            DayComboBoxItemsSource = Enumerable.Range(1, daysInMonth).ToList();
-            Debug.WriteLine($"DayComboBoxItemsSource updated: {string.Join(", ", DayComboBoxItemsSource)}");
-
+            var localList = Enumerable.Range(1, daysInMonth).ToList();
+            DayComboBoxItemsSource = new ObservableCollection<int>(localList);
         }
     }
 
@@ -127,46 +124,28 @@ public class AddAuthorDialogViewModel : ModelBase
         }
     }
 
-
-    private void SaveAuthor(object obj)
+    private void OnAddAuthor(object obj)
     {
-        if (string.IsNullOrEmpty(Firstname) || string.IsNullOrEmpty(Lastname)) 
+        if (string.IsNullOrEmpty(Firstname) || string.IsNullOrEmpty(Lastname))
         {
             MessageBox.Show("Please fill out all fields.");
             return;
         }
-        var selectedDate = DateTime.Parse(Year.ToString() + "-" + Month.ToString() + "-" + Day.ToString());
-
-
-        Author addAuthor = new Author
+        var selectedDate = DateOnly.Parse(Year.ToString() + "-" + Month.ToString() + "-" + Day.ToString());
+        
+        Author newAuthor = new Author
         {
             Firstname = Firstname,
             Lastname = Lastname,
             Birthdate = selectedDate
         };
-        using (var context = new BookstoreContext())
-        {
-            context.Add(addAuthor);
-            context.SaveChanges();
 
-            //  _mainWindow.AddAuthorToOC(addAuthor);
-
-        }
-        OnAuthorAdded(addAuthor);
-        RaisePropertyChanged("authors");
+        _authorManager.AddAuthor(newAuthor);
+        Close?.Invoke();
     }
 
 
-    protected virtual void OnAuthorAdded(Author author)
-    {
-        AuthorAdded?.Invoke(this, author);
-    }
 
 
-    public event PropertyChangedEventHandler? PropertyChanged;
 
-    public void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }
