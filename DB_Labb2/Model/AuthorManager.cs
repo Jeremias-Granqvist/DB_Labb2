@@ -17,7 +17,6 @@ namespace DB_Labb2.Model
             {
                 context.Add(author);
                 context.SaveChanges();
-
             }
             OnAuthorAdded(author);
         }

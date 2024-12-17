@@ -1,12 +1,7 @@
 ﻿using DB_Labb2.Command;
 using DB_Labb2.Model;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Automation;
+using System.Windows;
 using System.Windows.Input;
 
 namespace DB_Labb2.viewModel
@@ -26,24 +21,22 @@ namespace DB_Labb2.viewModel
         public Action Close { get; set; }
 
         private ObservableCollection<Author> _authors;
-
         public ObservableCollection<Author> Authors
         {
             get { return _authors; }
-            set 
-            { 
+            set
+            {
                 _authors = value;
                 RaisePropertyChanged();
             }
         }
 
         private Author _selectedAuthor;
-
         public Author SelectedAuthor
         {
             get { return _selectedAuthor; }
-            set 
-            { 
+            set
+            {
                 _selectedAuthor = value;
                 RaisePropertyChanged();
 
@@ -52,33 +45,37 @@ namespace DB_Labb2.viewModel
                     SelectedYear = _selectedAuthor.Birthdate.Year;
                     SelectedMonth = _selectedAuthor.Birthdate.Month;
                     SelectedDay = _selectedAuthor.Birthdate.Day;
-                    
+
+                    OriginalFirstName = _selectedAuthor.Firstname;
+                    OriginalLastName = _selectedAuthor.Lastname;
+                    OriginalBirthDate = _selectedAuthor.Birthdate;
                 }
             }
         }
 
+        private string _originalFirstName;
 
-
-        private string _firstName;
-
-        public string FirstName
+        public string OriginalFirstName
         {
-            get { return _firstName; }
-            set 
-            { 
-                _firstName = value;
-                RaisePropertyChanged();
-            }
+            get { return _originalFirstName; }
+            set { _originalFirstName = value; }
         }
 
-        private string _lastName;
+        private string _originalLastName;
 
-        public string LastName
+        public string OriginalLastName
         {
-            get { return _lastName; }
-            set 
-            { 
-                _lastName = value;
+            get { return _originalLastName; }
+            set { _originalLastName = value; }
+        }
+        private DateOnly _originalBirthDate;
+
+        public DateOnly OriginalBirthDate
+        {
+            get { return _originalBirthDate; }
+            set
+            {
+                _originalBirthDate = value;
                 RaisePropertyChanged();
             }
         }
@@ -88,8 +85,8 @@ namespace DB_Labb2.viewModel
         public DateOnly BirthDate
         {
             get { return _birthDate; }
-            set 
-            { 
+            set
+            {
                 _birthDate = value;
                 RaisePropertyChanged();
             }
@@ -100,8 +97,8 @@ namespace DB_Labb2.viewModel
         public int SelectedYear
         {
             get { return _selectedYear; }
-            set 
-            { 
+            set
+            {
                 _selectedYear = value;
                 RaisePropertyChanged();
             }
@@ -111,8 +108,8 @@ namespace DB_Labb2.viewModel
         public int SelectedMonth
         {
             get { return _selectedMonth; }
-            set 
-            { 
+            set
+            {
                 _selectedMonth = value;
                 Month = (Months)value;
                 RaisePropertyChanged();
@@ -124,8 +121,8 @@ namespace DB_Labb2.viewModel
         public Months Month
         {
             get { return _month; }
-            set 
-            { 
+            set
+            {
                 _month = value;
                 UpdateDaysInMonth();
                 RaisePropertyChanged();
@@ -137,8 +134,8 @@ namespace DB_Labb2.viewModel
         public int SelectedDay
         {
             get { return _selectedDay; }
-            set 
-            { 
+            set
+            {
                 _selectedDay = value;
                 RaisePropertyChanged();
             }
@@ -149,13 +146,23 @@ namespace DB_Labb2.viewModel
         public ObservableCollection<int> DayComboBoxItemsSource
         {
             get { return _dayComboBoxItemsSource; }
-            set 
-            { 
+            set
+            {
                 _dayComboBoxItemsSource = value;
                 RaisePropertyChanged();
             }
         }
 
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                _isSelected = value;
+                RaisePropertyChanged();
+            }
+        }
 
         private void UpdateDaysInMonth()
         {
@@ -184,10 +191,53 @@ namespace DB_Labb2.viewModel
         }
         private void OnEditAuthor(object obj)
         {
-        //implementera att skriva över datan med ny när man trycker på save.
+            if (IsSelected)
+            {
+                string messageBoxText = $"This will permanently remove {SelectedAuthor.FullName} from the database, do you wish to continue?";
+                string caption = "Warning";
+                MessageBoxButton button = MessageBoxButton.YesNo;
+                MessageBoxImage icon = MessageBoxImage.Warning;
+                var result = MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.Yes);
+
+                switch (result)
+                {
+                    case MessageBoxResult.Yes:
+                        DeleteAuthorFromDB(SelectedAuthor);
+                        break;
+                    case MessageBoxResult.No:
+                        IsSelected = !IsSelected;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (!IsSelected)
+            {
+                UpdateAuthorInformation(SelectedAuthor);
+            }
+            Close?.Invoke();
         }
+
+        private void UpdateAuthorInformation(Author author)
+        {
+            SelectedAuthor.Birthdate = DateOnly.Parse(SelectedYear.ToString() + "-" + SelectedMonth.ToString() + "-" + SelectedDay.ToString());
+            _authorManager.EditAuthor(SelectedAuthor);
+        }
+
+        private void DeleteAuthorFromDB(Author author)
+        {
+            var authorToRemove = Authors.FirstOrDefault(a => a.AuthorID == author.AuthorID);
+            _authorManager.DeleteAuthor(authorToRemove.AuthorID);
+        }
+
         private void OnCancelClick(object obj)
         {
+            if (_selectedAuthor != null)
+            {
+                _selectedAuthor.Firstname = _originalFirstName;
+                _selectedAuthor.Lastname = _originalLastName;
+                _selectedAuthor.Birthdate = _originalBirthDate;
+            }
             Close?.Invoke();
         }
     }

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DB_Labb2"
+        xmlns:convert="clr-namespace:DB_Labb2.Converters"
         xmlns:viewmodel ="clr-namespace:DB_Labb2.viewModel"
         mc:Ignorable="d"
         Title="MainWindow"
@@ -12,7 +13,9 @@
     <Window.DataContext>
         <viewmodel:MainViewModel />
     </Window.DataContext>
-    
+    <Window.Resources>
+        <convert:AuthorNameConverter x:Key="AuthorNameConverter" />
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition x:Name="MenuRow"
@@ -37,7 +40,8 @@
             <MenuItem Header="Books">
                 <MenuItem Header="Add Book"
                           Command="{Binding AddBookCommand}"/>
-                <MenuItem Header="Edit Book" />
+                <MenuItem Header="Edit Book" 
+                          Command="{Binding EditBookCommand}"/>
             </MenuItem>
             <MenuItem Header="Help" />
         </Menu>
@@ -63,16 +67,17 @@
                 <DataGrid x:Name="AuthorDataGrid"
                           AutoGenerateColumns="false"
                           ItemsSource="{Binding Authors}"
-                          Margin="5,5">
+                          Margin="5,5"
+                          IsReadOnly="True">
                     <DataGrid.Columns>
                     <DataGridTextColumn Header="AuthorID"
-                                        Binding="{Binding AuthorID}" />
+                                        Binding="{Binding AuthorID, UpdateSourceTrigger=PropertyChanged}" />
                     <DataGridTextColumn Header="Firstname"
-                                        Binding="{Binding Firstname}" />
+                                        Binding="{Binding Firstname, UpdateSourceTrigger=PropertyChanged}" />
                     <DataGridTextColumn Header="Lastname"
-                                        Binding="{Binding Lastname}" />
+                                        Binding="{Binding Lastname, UpdateSourceTrigger=PropertyChanged}" />
                     <DataGridTextColumn Header="Birthdate"
-                                        Binding="{Binding Birthdate}" />
+                                        Binding="{Binding Birthdate, UpdateSourceTrigger=PropertyChanged}" />
                     </DataGrid.Columns>
                 </DataGrid>
 
@@ -81,10 +86,29 @@
                      Header="Books">
                 <DataGrid x:Name="BooksDataGrid"
                           ItemsSource="{Binding Books}"
-                          AutoGenerateColumns="True"
-                          Margin="5,5" />
+                          AutoGenerateColumns="False"
+                          Margin="5,5"
+                          IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ISBN"
+                                            Binding="{Binding ISBN13, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTextColumn Header="Title"
+                                            Binding="{Binding Title, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTextColumn Header="Release Date"
+                                            Binding="{Binding ReleaseDate, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTemplateColumn Header="Authors">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Authors, Converter={StaticResource AuthorNameConverter}}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid> 
             </TabItem>
-            <TabItem x:Name="InventoryTabControl"
+
+                <TabItem x:Name="InventoryTabControl"
                      Header="Inventory">
                 <DataGrid x:Name="InventoryDataGrid"
                           Margin="5,5" />

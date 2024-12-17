@@ -13,17 +13,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace DB_Labb2.Dialogs
+namespace DB_Labb2.Dialogs;
+public partial class EditAuthorDialog : Window
 {
-
-    public partial class EditAuthorDialog : Window
+    public EditAuthorDialog(EditAuthorDialogViewModel editAuthorModel)
     {
-        public EditAuthorDialog(EditAuthorDialogViewModel editAuthorModel)
-        {
-            InitializeComponent();
-            this.DataContext = editAuthorModel;
-            YearComboBox.ItemsSource = Enumerable.Range(1455, DateTime.UtcNow.Year - 1455).Reverse().ToList();
-
-        }
+        InitializeComponent();
+        this.DataContext = editAuthorModel;
+        YearComboBox.ItemsSource = Enumerable.Range(1455, DateTime.UtcNow.Year - 1455).Reverse().ToList();
     }
 }
