@@ -38,9 +38,7 @@ public class MainViewModel : ModelBase, ICloseWindows
         
         AddBookCommand = new DelegateCommand(OnAddBookClick);
         EditBookCommand = new DelegateCommand(OnEditBookClick);
-        SetDataGrids();
-
-        
+        SetDataGrids();  
 
     }
 
@@ -50,6 +48,15 @@ public class MainViewModel : ModelBase, ICloseWindows
     public ICommand AddBookCommand { get; }
     public ICommand EditBookCommand { get; }
     public Action Close { get; set; }
+
+
+    private ObservableCollection<Inventory> _inventories;
+
+    public ObservableCollection<Inventory> Inventories
+    {
+        get { return _inventories; }
+        set { _inventories = value; }
+    }
 
 
     private ObservableCollection<Author> _authors;
@@ -78,6 +85,10 @@ public class MainViewModel : ModelBase, ICloseWindows
         using var db = new BookstoreContext();
         Authors = new ObservableCollection<Author>(db.Authors);
         Books = new ObservableCollection<Book>(db.Books.Include(b => b.Authors));
+        Inventories = new ObservableCollection<Inventory>(db.Inventory
+            .Include(i => i.book)
+            .Include(i => i.store)
+            .ToList());
     }
 
     private void OnAddAuthorClick(object obj)

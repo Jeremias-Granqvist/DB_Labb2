@@ -111,7 +111,19 @@
                 <TabItem x:Name="InventoryTabControl"
                      Header="Inventory">
                 <DataGrid x:Name="InventoryDataGrid"
-                          Margin="5,5" />
+                          Margin="5,5"
+                          AutoGenerateColumns="False"
+                          ItemsSource="{Binding Inventories}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ISBN"
+                                            Binding="{Binding InventoryISBN13, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTextColumn Header="StoreID"
+                                            Binding="{Binding store.StoreName, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTextColumn Header="Amount"
+                                            Binding="{Binding Amount, UpdateSourceTrigger=PropertyChanged}" />
+                    </DataGrid.Columns>
+                    
+                </DataGrid>
             </TabItem>
         </TabControl>
     </Grid>

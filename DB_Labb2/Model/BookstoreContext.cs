@@ -21,7 +21,8 @@ public partial class BookstoreContext : DbContext
     public virtual DbSet<Format> Formats { get; set; }
     public virtual DbSet<Publisher> Publishers { get; set; }
     public virtual DbSet<BookAuthor> BookAuthors { get; set; }
-
+    public virtual DbSet<Store> Stores { get; set; }
+    public virtual DbSet<Inventory> Inventory { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -88,6 +89,27 @@ public partial class BookstoreContext : DbContext
 
         modelBuilder.Entity<Publisher>()
                     .HasKey(p => p.PublisherID);
+
+        //stores configuration
+        modelBuilder.Entity<Store>()
+                    .HasKey(s => s.StoreID);
+        modelBuilder.Entity<Store>()
+                    .Property(s => s.StoreName)
+                    .HasMaxLength(50);
+
+        //inventory configuration
+        modelBuilder.Entity<Inventory>()
+                    .HasKey(i => new { i.InventoryISBN13, i.StoreID });
+        modelBuilder.Entity<Inventory>()
+                    .HasOne(i => i.book)
+                    .WithMany(b => b.inventories)
+                    .HasForeignKey(i => i.InventoryISBN13);
+
+        modelBuilder.Entity<Inventory>()
+                    .HasOne(i => i.book)
+                    .WithMany(b => b.inventories)
+                    .HasForeignKey(i => i.InventoryISBN13);
+
 
         base.OnModelCreating(modelBuilder);
 

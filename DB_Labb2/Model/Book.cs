@@ -61,6 +61,5 @@ public class Book : ModelBase
     public ICollection<Author> Authors { get; set; } = new List<Author>();
     [JsonIgnore]
     public ICollection<BookAuthor> BookAuthors { get; set; } = new List<BookAuthor>();
-
-
+    public ICollection<Inventory> inventories { get; set; } = new List<Inventory>();
 }
