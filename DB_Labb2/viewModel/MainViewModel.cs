@@ -1,29 +1,28 @@
-﻿using System.Windows.Input;
-using DB_Labb2.Command;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows;
-using DB_Labb2.Model;
+﻿using DB_Labb2.Command;
 using DB_Labb2.Dialogs;
-using Microsoft.EntityFrameworkCore.Query.Internal;
+using DB_Labb2.Model;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Input;
 
 namespace DB_Labb2.viewModel;
 
 public class MainViewModel : ModelBase, ICloseWindows
 {
 
-
     private AuthorManager _authorManager;
     private BookManager _bookManager;
+    private InventoryManager _inventoryManager;
     public MainViewModel()
     {
         _authorManager = new AuthorManager();
+        _bookManager = new BookManager();
+        _inventoryManager = new InventoryManager();
+
         _authors = new ObservableCollection<Author>();
         _books = new ObservableCollection<Book>();
-        _bookManager = new BookManager();
+
 
         _authorManager.AuthorAdded += AuthorManager_AuthorAdded;
         _authorManager.AuthorEdited += AuthorManager_AuthorEdited;
@@ -31,17 +30,32 @@ public class MainViewModel : ModelBase, ICloseWindows
         _bookManager.BookAdded += BookManager_BookAdded;
         _bookManager.BookEdited += BookManager_BookEdited;
         _bookManager.BookDeleted += BookManager_BookDeleted;
-
+        _inventoryManager.InventoryAdded += InventoryManager_InventoryAdded;
+        _inventoryManager.InventoryEdited += InventoryManager_InventoryEdited;
+        _inventoryManager.InventoryDeleted += InventoryManager_InventoryDeleted;
+        
+        
         PressCancelButtonCommand = new DelegateCommand(OnCancelButtonPress);
+        
         AddAuthorCommand = new DelegateCommand(OnAddAuthorClick);
         AlterAuthorCommand = new DelegateCommand(OnAlterAuthorClick);
-        
+
         AddBookCommand = new DelegateCommand(OnAddBookClick);
         EditBookCommand = new DelegateCommand(OnEditBookClick);
-        SetDataGrids();  
+        
+        PressAddToInventoryCommand = new DelegateCommand(OnAddToInventoryClick);
+        PressRemoveFromInventoryCommand = new DelegateCommand(OnRemoveFromInventoryClick);
+        SetDataGrids();
 
     }
 
+
+
+
+
+    //startup settings and commands
+    public ICommand PressAddToInventoryCommand { get; }
+    public ICommand PressRemoveFromInventoryCommand { get; }
     public ICommand PressCancelButtonCommand { get; }
     public ICommand AddAuthorCommand { get; }
     public ICommand AlterAuthorCommand { get; }
@@ -49,15 +63,12 @@ public class MainViewModel : ModelBase, ICloseWindows
     public ICommand EditBookCommand { get; }
     public Action Close { get; set; }
 
-
     private ObservableCollection<Inventory> _inventories;
-
     public ObservableCollection<Inventory> Inventories
     {
         get { return _inventories; }
         set { _inventories = value; }
     }
-
 
     private ObservableCollection<Author> _authors;
     public ObservableCollection<Author> Authors
@@ -80,6 +91,18 @@ public class MainViewModel : ModelBase, ICloseWindows
             RaisePropertyChanged();
         }
     }
+
+    private ObservableCollection<Store> _stores;
+    public ObservableCollection<Store> Stores
+    {
+        get { return _stores; }
+        set
+        {
+            _stores = value;
+            RaisePropertyChanged();
+        }
+    }
+
     private void SetDataGrids()
     {
         using var db = new BookstoreContext();
@@ -88,14 +111,122 @@ public class MainViewModel : ModelBase, ICloseWindows
         Inventories = new ObservableCollection<Inventory>(db.Inventory
             .Include(i => i.book)
             .Include(i => i.store)
+            .Where(i => i.Amount > 0)
             .ToList());
+        Stores = new ObservableCollection<Store>(db.Stores);
     }
 
+    //Inventory updating
+
+    private Store _selectedStore;
+
+    public Store SelectedStore
+    {
+        get { return _selectedStore; }
+        set
+        {
+            _selectedStore = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    private Book _selectedBook;
+
+    public Book SelectedBook
+    {
+        get { return _selectedBook; }
+        set
+        {
+            _selectedBook = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    private int _addToAmount;
+
+    public int AddToAmount
+    {
+        get { return _addToAmount; }
+        set
+        {
+            _addToAmount = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    private void OnAddToInventoryClick(object obj)
+    {
+        bool? existsInList = Inventories.Any(i => i.InventoryISBN13 == SelectedBook.ISBN13 && i.StoreID == SelectedStore.StoreID);
+
+        if (existsInList == true)
+        {
+            foreach (var inventory in Inventories)
+            {
+                if (inventory.InventoryISBN13 == SelectedBook.ISBN13 && inventory.StoreID == SelectedStore.StoreID)
+                {
+                    inventory.Amount = inventory.Amount + AddToAmount;
+                    RaisePropertyChanged();
+                    _inventoryManager.EditInventory(inventory);
+                }
+            }
+        }
+        else
+        {
+            var newAdditionToInventory = new Inventory() 
+            { 
+                Amount = AddToAmount, 
+                StoreID = SelectedStore.StoreID, 
+                store = SelectedStore, 
+                book = SelectedBook, 
+                InventoryISBN13 = SelectedBook.ISBN13 
+            };
+            RaisePropertyChanged("Inventories");
+        _inventoryManager.AddInventory(newAdditionToInventory);
+        }
+    }
+
+    private void OnRemoveFromInventoryClick(object obj)
+    {
+        bool existsInList = Inventories.Any(i => i.InventoryISBN13 == SelectedBook.ISBN13 && i.StoreID == SelectedStore.StoreID);
+
+        if (existsInList)
+        {
+            foreach (var inventory in Inventories)
+            {
+                if (inventory.InventoryISBN13 == SelectedBook.ISBN13 && inventory.StoreID == SelectedStore.StoreID)
+                {
+                    inventory.Amount = inventory.Amount - AddToAmount;
+                    if (inventory.Amount < 0)
+                    {
+                        inventory.Amount = 0;
+                        _inventoryManager.DeleteInventory(inventory);
+                    }
+                    else
+                    {
+                    _inventoryManager.EditInventory(inventory);
+                    }
+                    RaisePropertyChanged("Inventories");
+                        break;
+                }
+            }
+        }
+        else
+        {
+            string messageBoxText = $"This book does not exist in your inventory, doublecheck your storename and book title.";
+            string caption = "Warning";
+            MessageBoxButton button = MessageBoxButton.OK;
+            MessageBoxImage icon = MessageBoxImage.Error;
+            var result = MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.OK);
+        }
+    }
+
+
+    //menu button clicks
     private void OnAddAuthorClick(object obj)
     {
         var addAuthorModel = new AddAuthorDialogViewModel(_authorManager);
-        var addAuthorWindow = new AddAuthorDialog(addAuthorModel) 
-        { 
+        var addAuthorWindow = new AddAuthorDialog(addAuthorModel)
+        {
             DataContext = addAuthorModel
         };
 
@@ -109,9 +240,9 @@ public class MainViewModel : ModelBase, ICloseWindows
     private void OnAlterAuthorClick(object obj)
     {
         var editAuthorModel = new EditAuthorDialogViewModel(_authorManager, this);
-        var editAuthorWindow = new EditAuthorDialog(editAuthorModel) 
+        var editAuthorWindow = new EditAuthorDialog(editAuthorModel)
         {
-            DataContext = editAuthorModel 
+            DataContext = editAuthorModel
         };
 
         if (editAuthorWindow.DataContext is ICloseWindows dialogViewModel)
@@ -124,9 +255,9 @@ public class MainViewModel : ModelBase, ICloseWindows
     private void OnAddBookClick(object obj)
     {
         var addBookModel = new AddBookDialogViewModel(_bookManager, this);
-        var addBookWindow = new AddBookDialog(addBookModel) 
+        var addBookWindow = new AddBookDialog(addBookModel)
         {
-            DataContext = addBookModel 
+            DataContext = addBookModel
         };
         if (addBookWindow.DataContext is ICloseWindows dialogViewModel)
         {
@@ -138,9 +269,9 @@ public class MainViewModel : ModelBase, ICloseWindows
     private void OnEditBookClick(object obj)
     {
         var editBookModel = new EditBookDialogViewModel(_bookManager, this);
-        var editBookWindow = new EditBookDialog(editBookModel) 
+        var editBookWindow = new EditBookDialog(editBookModel)
         {
-            DataContext = editBookModel 
+            DataContext = editBookModel
         };
         if (editBookWindow.DataContext is ICloseWindows dialogViewModel)
         {
@@ -148,6 +279,11 @@ public class MainViewModel : ModelBase, ICloseWindows
         }
         editBookWindow.Show();
     }
+
+
+
+
+    //eventhandling and updates
 
     private void AuthorManager_AuthorAdded(object sender, Author author)
     {
@@ -157,7 +293,7 @@ public class MainViewModel : ModelBase, ICloseWindows
     private void AuthorManager_AuthorEdited(object? sender, Author author)
     {
         var authorInCollection = Authors.FirstOrDefault(a => a.AuthorID == author.AuthorID);
-        if(authorInCollection != null)
+        if (authorInCollection != null)
         {
             authorInCollection.Firstname = author.Firstname;
             authorInCollection.Lastname = author.Lastname;
@@ -165,7 +301,7 @@ public class MainViewModel : ModelBase, ICloseWindows
         }
         RaisePropertyChanged("Author");
         RaisePropertyChanged("Authors");
-        
+
     }
     private void AuthorManager_AuthorDeleted(object? sender, int authorID)
     {
@@ -206,6 +342,38 @@ public class MainViewModel : ModelBase, ICloseWindows
             RaisePropertyChanged("Books");
         }
     }
+
+    private void InventoryManager_InventoryAdded(object? sender, Inventory inventory)
+    {
+        Inventories.Add(inventory);
+        RaisePropertyChanged("Inventories");
+    }
+    private void InventoryManager_InventoryEdited(object? sender, Inventory inventory)
+    {
+        var inventoryInCollection = Inventories.FirstOrDefault(i => i.InventoryISBN13 == inventory.InventoryISBN13 && i.StoreID == inventory.StoreID);
+        if (inventoryInCollection != null)
+        {
+            inventoryInCollection.Amount = inventory.Amount;
+        }
+        if (inventoryInCollection == null)
+        {
+            Inventories.Add(inventory);
+        }
+        RaisePropertyChanged("Inventories");
+
+    }
+    private void InventoryManager_InventoryDeleted(object? sender, Inventory inventory)
+    {
+        var inventoryToDelete = Inventories.FirstOrDefault(i => i.InventoryISBN13 == inventory.InventoryISBN13 && i.StoreID == inventory.StoreID);
+        if (inventoryToDelete != null)
+        {
+            Inventories.Remove(inventoryToDelete);
+            RaisePropertyChanged("Inventories");
+        }
+    }
+
+
+
 
     private void OnCancelButtonPress(object obj)
     {

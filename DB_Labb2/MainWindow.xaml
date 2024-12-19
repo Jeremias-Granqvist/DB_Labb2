@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DB_Labb2"
         xmlns:convert="clr-namespace:DB_Labb2.Converters"
-        xmlns:viewmodel ="clr-namespace:DB_Labb2.viewModel"
+        xmlns:viewmodel="clr-namespace:DB_Labb2.viewModel"
         mc:Ignorable="d"
         Title="MainWindow"
         Height="450"
@@ -21,45 +21,326 @@
             <RowDefinition x:Name="MenuRow"
                            Height="20" />
             <RowDefinition x:Name="SearchRow"
-                           Height="*" />
+                           Height="5*" />
             <RowDefinition x:Name="ResultRow"
-                           Height="4*" />
+                           Height="18*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="2*" />
+
         </Grid.ColumnDefinitions>
-        <Menu>
+        <Menu Grid.ColumnSpan="3"
+              Margin="0,0,533,0">
             <MenuItem Header="Main" />
             <MenuItem Header="Author">
                 <MenuItem Header="Add Author"
-                          Command="{Binding AddAuthorCommand}"/>
-                <MenuItem Header="Edit Author" 
-                          Command="{Binding AlterAuthorCommand}"/>
+                          Command="{Binding AddAuthorCommand}" />
+                <MenuItem Header="Edit Author"
+                          Command="{Binding AlterAuthorCommand}" />
             </MenuItem>
             <MenuItem Header="Books">
                 <MenuItem Header="Add Book"
-                          Command="{Binding AddBookCommand}"/>
-                <MenuItem Header="Edit Book" 
-                          Command="{Binding EditBookCommand}"/>
+                          Command="{Binding AddBookCommand}" />
+                <MenuItem Header="Edit Book"
+                          Command="{Binding EditBookCommand}" />
             </MenuItem>
             <MenuItem Header="Help" />
         </Menu>
 
         <TextBox x:Name="SearchTB"
-                 Grid.Column="0"
                  Grid.Row="1"
-                 Margin="100,30,30,30"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Center"
                  FontStyle="Italic"
-                 Text="Search Here" />
+                 Width="150"
+                 Text="Search Here"
+                 Height="0">
+            <TextBox.Style>
+                <Style TargetType="TextBox">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="1">
+                            <Setter Property="Visibility"
+                                    Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="0">
+                            <Setter Property="Visibility"
+                                    Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="2">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+
+        </TextBox>
+
         <Button x:Name="SearchBTN"
                 Content="Search"
-                Grid.Column="1"
                 Grid.Row="1"
-                Margin="30,30,200,30" />
+                Width="80"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                Margin="157,0,0,0"
+                Height="0">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="1">
+                            <Setter Property="Visibility"
+                                    Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="0">
+                            <Setter Property="Visibility"
+                                    Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="2">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
 
-        <TabControl Grid.Row="2"
-                    Grid.ColumnSpan="2"
+        <Label Content="Pick your store:"
+               Grid.Row="1"
+               Grid.Column="0"
+               FontSize="12"
+               FontWeight="Bold"
+               Margin="10,32,157,33"
+               Height="25"
+               Width="100">
+            <Label.Style>
+                <Style TargetType="Label">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="1">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="0">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="2">
+                            <Setter Property="Visibility"
+                                    Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Label.Style>
+        </Label>
+        <ComboBox x:Name="StoreIDComboBox"
+                  Grid.Row="1"
+                  VerticalAlignment="Top"
+                  HorizontalAlignment="Left"
+                  Margin="116,36,0,0"
+                  Width="180"
+                  ItemsSource="{Binding Stores}"
+                  SelectedValuePath="StoreID"
+                  DisplayMemberPath="StoreName"
+                  Grid.ColumnSpan="3"
+                  SelectedItem="{Binding SelectedStore, UpdateSourceTrigger=PropertyChanged}"
+                  Height="25">
+            <ComboBox.Style>
+                <Style TargetType="ComboBox">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="1">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="0">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="2">
+                            <Setter Property="Visibility"
+                                    Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ComboBox.Style>
+        </ComboBox>
+
+        <ComboBox x:Name="BookISBNComboBox"
+                  Grid.Row="1"
+                  HorizontalAlignment="Left"
+                  Margin="49,35,0,20"
+                  Width="100"
+                  Height="25"
+                  ItemsSource="{Binding Books}"
+                  SelectedValuePath="ISBN13"
+                  DisplayMemberPath="Title"
+                  Grid.Column="2"
+                  SelectedItem="{Binding SelectedBook}">
+            <ComboBox.Style>
+                <Style TargetType="ComboBox">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="1">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="0">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="2">
+                            <Setter Property="Visibility"
+                                    Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ComboBox.Style>
+        </ComboBox>
+
+        <Label Content="Amount to add:"
+               Grid.Row="1"
+               Grid.Column="2"
+               FontSize="12"
+               FontWeight="Bold"
+               Height="25"
+               Width="100"
+               Margin="170,35,263,30">
+            <Label.Style>
+                <Style TargetType="Label">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="1">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="0">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="2">
+                            <Setter Property="Visibility"
+                                    Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Label.Style>
+        </Label>
+
+        <TextBox x:Name="AmountTB"
+                 Grid.Column="2"
+                 Grid.Row="1"
+                 Margin="289,35,204,30"
+                 Height="25"
+                 Width="40"
+                 Text="{Binding AddToAmount}">
+            <TextBox.Style>
+                <Style TargetType="TextBox">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="1">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="0">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="2">
+                            <Setter Property="Visibility"
+                                    Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+
+        <Button x:Name="AddToInventoryBTN"
+                Content="Add amount to inventory"
+                Width="150"
+                Height="25"
+                Grid.Column="2"
+                Grid.Row="1"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                Margin="373,10,0,0"
+                Command="{Binding PressAddToInventoryCommand}">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="1">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="0">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="2">
+                            <Setter Property="Visibility"
+                                    Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+
+        <Button x:Name="RemoveFromInventoryBTN"
+                Content="Remove amount inventory"
+                Width="150"
+                Height="25"
+                Grid.Column="2"
+                Grid.Row="1"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                Margin="373,60,0,0"
+                Command="{Binding PressRemoveFromInventoryCommand}">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="1">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="0">
+                            <Setter Property="Visibility"
+                                    Value="Collapsed" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                     Value="2">
+                            <Setter Property="Visibility"
+                                    Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+
+        <TabControl x:Name="MainTabControl"
+                    Grid.Row="2"
+                    Grid.ColumnSpan="3"
                     Margin="10,10,10,10"
                     BorderThickness="2">
             <TabItem x:Name="AuthorsTabControl"
@@ -70,14 +351,14 @@
                           Margin="5,5"
                           IsReadOnly="True">
                     <DataGrid.Columns>
-                    <DataGridTextColumn Header="AuthorID"
-                                        Binding="{Binding AuthorID, UpdateSourceTrigger=PropertyChanged}" />
-                    <DataGridTextColumn Header="Firstname"
-                                        Binding="{Binding Firstname, UpdateSourceTrigger=PropertyChanged}" />
-                    <DataGridTextColumn Header="Lastname"
-                                        Binding="{Binding Lastname, UpdateSourceTrigger=PropertyChanged}" />
-                    <DataGridTextColumn Header="Birthdate"
-                                        Binding="{Binding Birthdate, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTextColumn Header="AuthorID"
+                                            Binding="{Binding AuthorID, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTextColumn Header="Firstname"
+                                            Binding="{Binding Firstname, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTextColumn Header="Lastname"
+                                            Binding="{Binding Lastname, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTextColumn Header="Birthdate"
+                                            Binding="{Binding Birthdate, UpdateSourceTrigger=PropertyChanged}" />
                     </DataGrid.Columns>
                 </DataGrid>
 
@@ -105,15 +386,16 @@
 
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
-                </DataGrid> 
+                </DataGrid>
             </TabItem>
 
-                <TabItem x:Name="InventoryTabControl"
+            <TabItem x:Name="InventoryTabControl"
                      Header="Inventory">
                 <DataGrid x:Name="InventoryDataGrid"
                           Margin="5,5"
                           AutoGenerateColumns="False"
-                          ItemsSource="{Binding Inventories}">
+                          IsReadOnly="True"
+                          ItemsSource="{Binding Inventories, UpdateSourceTrigger=PropertyChanged}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ISBN"
                                             Binding="{Binding InventoryISBN13, UpdateSourceTrigger=PropertyChanged}" />
@@ -121,8 +403,10 @@
                                             Binding="{Binding store.StoreName, UpdateSourceTrigger=PropertyChanged}" />
                         <DataGridTextColumn Header="Amount"
                                             Binding="{Binding Amount, UpdateSourceTrigger=PropertyChanged}" />
+                        <DataGridTextColumn Header="Title"
+                                            Binding="{Binding book.Title, UpdateSourceTrigger=PropertyChanged}" />
                     </DataGrid.Columns>
-                    
+
                 </DataGrid>
             </TabItem>
         </TabControl>

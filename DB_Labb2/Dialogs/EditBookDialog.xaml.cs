@@ -22,4 +22,16 @@ public partial class EditBookDialog : Window
         this.DataContext = editBookDialog;
         YearComboBox.ItemsSource = Enumerable.Range(1455, DateTime.UtcNow.Year - 1455).Reverse().ToList();
     }
+    
+    private void ISBNTB_PreviewTextInput(object sender, TextCompositionEventArgs e)
+    {
+
+        e.Handled = !IsDigit(e.Text);
+        
+    }
+
+    private bool IsDigit(string text)
+    {
+        return text.All(char.IsDigit);
+    }
 }

@@ -75,9 +75,10 @@
                  Width="200"
                  HorizontalAlignment="Center"
                  VerticalAlignment="Center"
-                 Text="{Binding SelectedBook.ISBN13, Mode=TwoWay}" />
+                 Text="{Binding SelectedBook.ISBN13, Mode=TwoWay}" 
+                 PreviewTextInput="ISBNTB_PreviewTextInput"/>
 
-        <Label Content="Titel:"
+        <Label Content="Title:"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
                Grid.Row="3" />
@@ -190,7 +191,7 @@
                 Content="Save"
                 Grid.Row="8"
                 Grid.Column="0"
-                Margin="10,10,10,10"
+                Margin="8,8,8,8"
                 Command="{Binding SaveButtonCommand}" />
 
         <Button x:Name="CancelBTN"
@@ -201,7 +202,7 @@
                 Height="50"
                 Grid.Row="8"
                 Grid.Column="1"
-                Margin="10,10,10,10"
+                Margin="8,8,8,8"
                 Command="{Binding CancelButtonCommand}" />
     </Grid>
 </Window>

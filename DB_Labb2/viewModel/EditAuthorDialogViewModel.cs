@@ -213,9 +213,23 @@ namespace DB_Labb2.viewModel
             }
             if (!IsSelected)
             {
+                if (SelectedAuthor.Firstname == string.Empty || SelectedAuthor.Lastname == string.Empty)
+                {
+                    string messageBoxText = $"Your Author is missing either a first or lastname, please update your information";
+                    string caption = "Error";
+                    MessageBoxButton button = MessageBoxButton.OK;
+                    MessageBoxImage icon = MessageBoxImage.Error;
+                    var result = MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.OK);
+                }
+                else
+                {
                 UpdateAuthorInformation(SelectedAuthor);
-            }
+
             Close?.Invoke();
+                }
+            }
+
+            
         }
 
         private void UpdateAuthorInformation(Author author)

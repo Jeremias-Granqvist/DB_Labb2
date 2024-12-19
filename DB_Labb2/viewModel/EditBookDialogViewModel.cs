@@ -346,6 +346,15 @@ namespace DB_Labb2.viewModel
             }
             if (!IsSelected)
             {
+                if (SelectedBook.ISBN13.ToString().Length != 13)
+                {
+                    string messageBoxText = $"Your ISBN number is not 13 characters long, please doublecheck your ISBN number.";
+                    string caption = "Error";
+                    MessageBoxButton button = MessageBoxButton.OK;
+                    MessageBoxImage icon = MessageBoxImage.Error;
+                    var result = MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.Yes);
+
+                }
                 UpdateBookInformation(SelectedBook);
             }
             Close?.Invoke();
