@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace DB_Labb2.viewModel
@@ -171,6 +172,17 @@ namespace DB_Labb2.viewModel
 
         private void OnSaveBook(object obj)
         {
+            if (string.IsNullOrEmpty(Title)|| string.IsNullOrEmpty(Language.ToString()) || Price == 0 || new[] { Year, (int)Month, Day }.Any(val => val == 0))
+            {
+                MessageBox.Show("Please fill out all fields.");
+                return;
+            }
+            if (ISBN13.ToString().Length != 13)
+            {
+                MessageBox.Show("Please ensure your ISBN is 13 characters long.");
+                return;
+            }
+
             var selectedDate = DateOnly.Parse(Year.ToString() + "-" + Month.ToString() + "-" + Day.ToString());
 
             var newBook = new Book()

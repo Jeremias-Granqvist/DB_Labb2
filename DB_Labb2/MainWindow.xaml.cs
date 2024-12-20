@@ -34,4 +34,5 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+
 }

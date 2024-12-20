@@ -21,19 +21,16 @@
             <RowDefinition x:Name="MenuRow"
                            Height="20" />
             <RowDefinition x:Name="SearchRow"
-                           Height="5*" />
+                           Height="6*" />
             <RowDefinition x:Name="ResultRow"
                            Height="18*" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="2*" />
-
-        </Grid.ColumnDefinitions>
         <Menu Grid.ColumnSpan="3"
-              Margin="0,0,533,0">
-            <MenuItem Header="Main" />
+              Margin="0,0,0,0">
+            <MenuItem Header="Main">
+                <MenuItem Header="Exit"
+                          Command="{Binding PressCancelButtonCommand}" />
+            </MenuItem>
             <MenuItem Header="Author">
                 <MenuItem Header="Add Author"
                           Command="{Binding AddAuthorCommand}" />
@@ -46,298 +43,411 @@
                 <MenuItem Header="Edit Book"
                           Command="{Binding EditBookCommand}" />
             </MenuItem>
-            <MenuItem Header="Help" />
         </Menu>
 
-        <TextBox x:Name="SearchTB"
-                 Grid.Row="1"
-                 VerticalAlignment="Center"
-                 HorizontalAlignment="Center"
-                 FontStyle="Italic"
-                 Width="150"
-                 Text="Search Here"
-                 Height="0">
-            <TextBox.Style>
-                <Style TargetType="TextBox">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="1">
-                            <Setter Property="Visibility"
-                                    Value="Visible" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="0">
-                            <Setter Property="Visibility"
-                                    Value="Visible" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="2">
-                            <Setter Property="Visibility"
-                                    Value="Collapsed" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBox.Style>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="21" />
+                <ColumnDefinition Width="33" />
+                <ColumnDefinition Width="176" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
 
-        </TextBox>
 
-        <Button x:Name="SearchBTN"
-                Content="Search"
-                Grid.Row="1"
-                Width="80"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Left"
-                Margin="157,0,0,0"
-                Height="0">
-            <Button.Style>
-                <Style TargetType="Button">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="1">
-                            <Setter Property="Visibility"
-                                    Value="Visible" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="0">
-                            <Setter Property="Visibility"
-                                    Value="Visible" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="2">
-                            <Setter Property="Visibility"
-                                    Value="Collapsed" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
-        </Button>
+            </Grid.ColumnDefinitions>
 
-        <Label Content="Pick your store:"
-               Grid.Row="1"
-               Grid.Column="0"
-               FontSize="12"
-               FontWeight="Bold"
-               Margin="10,32,157,33"
-               Height="25"
-               Width="100">
-            <Label.Style>
-                <Style TargetType="Label">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="1">
-                            <Setter Property="Visibility"
-                                    Value="Collapsed" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="0">
-                            <Setter Property="Visibility"
-                                    Value="Collapsed" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="2">
-                            <Setter Property="Visibility"
-                                    Value="Visible" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Label.Style>
-        </Label>
-        <ComboBox x:Name="StoreIDComboBox"
-                  Grid.Row="1"
-                  VerticalAlignment="Top"
-                  HorizontalAlignment="Left"
-                  Margin="116,36,0,0"
-                  Width="180"
-                  ItemsSource="{Binding Stores}"
-                  SelectedValuePath="StoreID"
-                  DisplayMemberPath="StoreName"
-                  Grid.ColumnSpan="3"
-                  SelectedItem="{Binding SelectedStore, UpdateSourceTrigger=PropertyChanged}"
-                  Height="25">
-            <ComboBox.Style>
-                <Style TargetType="ComboBox">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="1">
-                            <Setter Property="Visibility"
-                                    Value="Collapsed" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="0">
-                            <Setter Property="Visibility"
-                                    Value="Collapsed" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="2">
-                            <Setter Property="Visibility"
-                                    Value="Visible" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ComboBox.Style>
-        </ComboBox>
+            <TextBox x:Name="SearchAuthorTB"
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Left"
+                     Width="150"
+                     Height="25"
+                     Margin="19,0,0,0"
+                     Text="{Binding AuthorSearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Grid.Column="2"
+                     Grid.ColumnSpan="2">
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="1">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="0">
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="2">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
 
-        <ComboBox x:Name="BookISBNComboBox"
-                  Grid.Row="1"
-                  HorizontalAlignment="Left"
-                  Margin="49,35,0,20"
-                  Width="100"
-                  Height="25"
-                  ItemsSource="{Binding Books}"
-                  SelectedValuePath="ISBN13"
-                  DisplayMemberPath="Title"
-                  Grid.Column="2"
-                  SelectedItem="{Binding SelectedBook}">
-            <ComboBox.Style>
-                <Style TargetType="ComboBox">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="1">
-                            <Setter Property="Visibility"
-                                    Value="Collapsed" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="0">
-                            <Setter Property="Visibility"
-                                    Value="Collapsed" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="2">
-                            <Setter Property="Visibility"
-                                    Value="Visible" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ComboBox.Style>
-        </ComboBox>
+            <Button x:Name="SearchAuthorBTN"
+                    Content="Search"
+                    Grid.Column="5"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Width="80"
+                    Height="25"
+                    Command="{Binding PressAuthorSearchCommand}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="1">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="0">
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="2">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <TextBox x:Name="SearchBookTB"
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Left"
+                     Width="150"
+                     Height="25"
+                     Margin="19,0,0,0"
+                     Text="{Binding BookSearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Grid.Column="2"
+                     Grid.ColumnSpan="2">
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="1">
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="0">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="2">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
 
-        <Label Content="Amount to add:"
-               Grid.Row="1"
-               Grid.Column="2"
-               FontSize="12"
-               FontWeight="Bold"
-               Height="25"
-               Width="100"
-               Margin="170,35,263,30">
-            <Label.Style>
-                <Style TargetType="Label">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="1">
-                            <Setter Property="Visibility"
-                                    Value="Collapsed" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="0">
-                            <Setter Property="Visibility"
-                                    Value="Collapsed" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="2">
-                            <Setter Property="Visibility"
-                                    Value="Visible" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Label.Style>
-        </Label>
+            </TextBox>
 
-        <TextBox x:Name="AmountTB"
-                 Grid.Column="2"
-                 Grid.Row="1"
-                 Margin="289,35,204,30"
-                 Height="25"
-                 Width="40"
-                 Text="{Binding AddToAmount}">
-            <TextBox.Style>
-                <Style TargetType="TextBox">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="1">
-                            <Setter Property="Visibility"
-                                    Value="Collapsed" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="0">
-                            <Setter Property="Visibility"
-                                    Value="Collapsed" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="2">
-                            <Setter Property="Visibility"
-                                    Value="Visible" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBox.Style>
-        </TextBox>
+            <Button x:Name="SearchBookBTN"
+                    Content="Search"
+                    Grid.Column="5"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Width="80"
+                    Height="25"
+                    Command="{Binding PressBookSearchCommand}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="1">
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="0">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="2">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
 
-        <Button x:Name="AddToInventoryBTN"
-                Content="Add amount to inventory"
-                Width="150"
-                Height="25"
-                Grid.Column="2"
-                Grid.Row="1"
-                VerticalAlignment="Top"
-                HorizontalAlignment="Left"
-                Margin="373,10,0,0"
-                Command="{Binding PressAddToInventoryCommand}">
-            <Button.Style>
-                <Style TargetType="Button">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="1">
-                            <Setter Property="Visibility"
-                                    Value="Collapsed" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="0">
-                            <Setter Property="Visibility"
-                                    Value="Collapsed" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="2">
-                            <Setter Property="Visibility"
-                                    Value="Visible" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
-        </Button>
+            <Button x:Name="ResetFiltersBTN"
+                    Content="Reset Filter"
+                    Grid.Column="7"
+                    Width="80"
+                    Height="25"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Command="{Binding PressResetCommand}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="1">
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="0">
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="2">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
 
-        <Button x:Name="RemoveFromInventoryBTN"
-                Content="Remove amount inventory"
-                Width="150"
-                Height="25"
-                Grid.Column="2"
-                Grid.Row="1"
-                VerticalAlignment="Top"
-                HorizontalAlignment="Left"
-                Margin="373,60,0,0"
-                Command="{Binding PressRemoveFromInventoryCommand}">
-            <Button.Style>
-                <Style TargetType="Button">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="1">
-                            <Setter Property="Visibility"
-                                    Value="Collapsed" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="0">
-                            <Setter Property="Visibility"
-                                    Value="Collapsed" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
-                                     Value="2">
-                            <Setter Property="Visibility"
-                                    Value="Visible" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
-        </Button>
+            </Button>
 
+            <Label Content="Pick your store:"
+                   Grid.Column="3"
+                   FontSize="12"
+                   FontWeight="Bold"
+                   Height="25"
+                   Width="100"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Left"
+                   Margin="6,0,0,0">
+                <Label.Style>
+                    <Style TargetType="Label">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="1">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="0">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="2">
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
+            <ComboBox x:Name="StoreIDComboBox"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Left"
+                      Margin="86,0,0,0"
+                      Width="180"
+                      ItemsSource="{Binding Stores}"
+                      SelectedValuePath="StoreID"
+                      DisplayMemberPath="StoreName"
+                      SelectedItem="{Binding SelectedStore, UpdateSourceTrigger=PropertyChanged}"
+                      Height="25"
+                      Grid.Column="3"
+                      Grid.ColumnSpan="5">
+                <ComboBox.Style>
+                    <Style TargetType="ComboBox">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="1">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="0">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="2">
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ComboBox.Style>
+            </ComboBox>
+
+            <ComboBox x:Name="BookISBNComboBox"
+                      Width="80"
+                      Height="25"
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Center"
+                      ItemsSource="{Binding Books}"
+                      SelectedValuePath="ISBN13"
+                      DisplayMemberPath="Title"
+                      Grid.Column="6"
+                      SelectedItem="{Binding SelectedBook}">
+                <ComboBox.Style>
+                    <Style TargetType="ComboBox">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="1">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="0">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="2">
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ComboBox.Style>
+            </ComboBox>
+
+            <Label Content="Amount:"
+                   Grid.Column="7"
+                   FontSize="12"
+                   FontWeight="Bold"
+                   HorizontalContentAlignment="Center"
+                   Height="25"
+                   Width="80"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center">
+                <Label.Style>
+                    <Style TargetType="Label">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="1">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="0">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="2">
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
+
+            <TextBox x:Name="AmountTB"
+                     Grid.Column="7"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Center"
+                     Height="25"
+                     Width="40"
+                     Text="{Binding AddToAmount}"
+                     Grid.ColumnSpan="3"
+                     Margin="60,0,0,0">
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="1">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="0">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="2">
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+
+            <Button x:Name="AddToInventoryBTN"
+                    Content="Add amount to inventory"
+                    Width="150"
+                    Height="25"
+                    Grid.Column="7"
+                    Margin="5,15,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Command="{Binding PressAddToInventoryCommand}"
+                    Grid.ColumnSpan="3">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="1">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="0">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="2">
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Button x:Name="RemoveFromInventoryBTN"
+                    Content="Remove amount inventory"
+                    Width="150"
+                    Height="25"
+                    Margin="5,64,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Grid.Column="7"
+                    Command="{Binding PressRemoveFromInventoryCommand}"
+                    Grid.ColumnSpan="3">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="1">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="0">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedIndex, ElementName=MainTabControl}"
+                                         Value="2">
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </Grid>
         <TabControl x:Name="MainTabControl"
                     Grid.Row="2"
                     Grid.ColumnSpan="3"
@@ -347,7 +457,7 @@
                      Header="Authors">
                 <DataGrid x:Name="AuthorDataGrid"
                           AutoGenerateColumns="false"
-                          ItemsSource="{Binding Authors}"
+                          ItemsSource="{Binding FilteredAuthors}"
                           Margin="5,5"
                           IsReadOnly="True">
                     <DataGrid.Columns>
@@ -366,7 +476,7 @@
             <TabItem x:Name="BooksTabControl"
                      Header="Books">
                 <DataGrid x:Name="BooksDataGrid"
-                          ItemsSource="{Binding Books}"
+                          ItemsSource="{Binding FilteredBooks}"
                           AutoGenerateColumns="False"
                           Margin="5,5"
                           IsReadOnly="True">

@@ -213,13 +213,15 @@ namespace DB_Labb2.viewModel
             }
             if (!IsSelected)
             {
-                if (SelectedAuthor.Firstname == string.Empty || SelectedAuthor.Lastname == string.Empty)
+                if (SelectedAuthor == null)
                 {
-                    string messageBoxText = $"Your Author is missing either a first or lastname, please update your information";
-                    string caption = "Error";
-                    MessageBoxButton button = MessageBoxButton.OK;
-                    MessageBoxImage icon = MessageBoxImage.Error;
-                    var result = MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.OK);
+                    MessageBox.Show("Please choose an author to edit.");
+                    return;
+                }
+                if (SelectedAuthor.Firstname == string.Empty || SelectedAuthor.Lastname == string.Empty || new[] { SelectedYear, (int)SelectedMonth, SelectedDay }.Any(val => val == 0))
+                {
+                    MessageBox.Show("Please fill out all fields.");
+                    return;
                 }
                 else
                 {

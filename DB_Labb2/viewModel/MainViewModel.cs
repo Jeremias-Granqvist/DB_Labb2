@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
+using System.Xml;
 
 namespace DB_Labb2.viewModel;
 
@@ -45,15 +46,18 @@ public class MainViewModel : ModelBase, ICloseWindows
         
         PressAddToInventoryCommand = new DelegateCommand(OnAddToInventoryClick);
         PressRemoveFromInventoryCommand = new DelegateCommand(OnRemoveFromInventoryClick);
+
+        PressBookSearchCommand = new DelegateCommand(OnBookSearchClick);
+        PressAuthorSearchCommand = new DelegateCommand(OnAuthorSearchClick);
+        PressResetCommand = new DelegateCommand(OnResetFilterClick);
         SetDataGrids();
 
     }
 
-
-
-
-
     //startup settings and commands
+    public ICommand PressResetCommand { get; }
+    public ICommand PressBookSearchCommand { get; }
+    public ICommand PressAuthorSearchCommand { get; }
     public ICommand PressAddToInventoryCommand { get; }
     public ICommand PressRemoveFromInventoryCommand { get; }
     public ICommand PressCancelButtonCommand { get; }
@@ -114,8 +118,79 @@ public class MainViewModel : ModelBase, ICloseWindows
             .Where(i => i.Amount > 0)
             .ToList());
         Stores = new ObservableCollection<Store>(db.Stores);
+
+        FilteredAuthors = Authors;
+        FilteredBooks = Books;
+    
+    }
+    //Search handling
+
+    private string _authorSearchString;
+
+    public string AuthorSearchString
+    {
+        get { return _authorSearchString; }
+        set 
+        { 
+            _authorSearchString = value;
+            RaisePropertyChanged();
+        }
     }
 
+
+    private ObservableCollection<Author> _filteredAuthors;
+    public ObservableCollection<Author> FilteredAuthors
+    {
+        get { return _filteredAuthors; }
+        set 
+        { 
+            _filteredAuthors = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    private string _bookSearchString;
+
+    public string BookSearchString
+    {
+        get { return _bookSearchString; }
+        set 
+        { 
+            _bookSearchString = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    private ObservableCollection<Book> _filteredBooks;
+    public ObservableCollection<Book> FilteredBooks
+    {
+        get { return _filteredBooks; }
+        set 
+        { 
+            _filteredBooks = value;
+            RaisePropertyChanged();
+        }
+    }
+    private void OnBookSearchClick(object obj)
+    {
+        var filteredBook = string.IsNullOrWhiteSpace(BookSearchString)
+                        ? Books
+                        : new ObservableCollection<Book>(Books.Where(b => b.Title.ToLower().Contains(BookSearchString.ToLower())));
+        FilteredBooks = filteredBook;
+    }
+
+    private void OnAuthorSearchClick(object obj)
+    {
+        var filteredAuthor = string.IsNullOrWhiteSpace(AuthorSearchString)
+                        ? Authors
+                        : new ObservableCollection<Author>(Authors.Where(b => b.FullName.ToLower().Contains(AuthorSearchString.ToLower())));
+        FilteredAuthors = filteredAuthor;
+    }
+
+    private void OnResetFilterClick(object obj)
+    {
+        SetDataGrids();
+    }
     //Inventory updating
 
     private Store _selectedStore;

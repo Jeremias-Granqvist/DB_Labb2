@@ -126,7 +126,7 @@ public class AddAuthorDialogViewModel : ModelBase, ICloseWindows
 
     private void OnAddAuthor(object obj)
     {
-        if (string.IsNullOrEmpty(Firstname) || string.IsNullOrEmpty(Lastname))
+        if (string.IsNullOrEmpty(Firstname) || string.IsNullOrEmpty(Lastname) || new [] { Year, (int)Month, Day }.Any(val => val == 0))
         {
             MessageBox.Show("Please fill out all fields.");
             return;

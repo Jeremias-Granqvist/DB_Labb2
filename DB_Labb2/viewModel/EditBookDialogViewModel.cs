@@ -346,18 +346,31 @@ namespace DB_Labb2.viewModel
             }
             if (!IsSelected)
             {
+                if (SelectedBook == null)
+                {
+                    MessageBox.Show("Please pick a book to edit");
+                    return;
+                }
                 if (SelectedBook.ISBN13.ToString().Length != 13)
                 {
-                    string messageBoxText = $"Your ISBN number is not 13 characters long, please doublecheck your ISBN number.";
+                    MessageBox.Show("Please ensure your ISBN number is 13 characters long");
+                    return;
+
+                }
+                else if (SelectedBook.Title == string.Empty || SelectedBook.Language == string.Empty || SelectedBook.Price == 0)
+                    {
+                    string messageBoxText = $"Please fill out all fields.";
                     string caption = "Error";
                     MessageBoxButton button = MessageBoxButton.OK;
                     MessageBoxImage icon = MessageBoxImage.Error;
-                    var result = MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.Yes);
-
+                    var result = MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.OK);
                 }
+                else
+                {
                 UpdateBookInformation(SelectedBook);
+                Close?.Invoke();
+                }
             }
-            Close?.Invoke();
         }
 
         private void UpdateBookInformation(Book book)
