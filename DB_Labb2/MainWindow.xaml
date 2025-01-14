@@ -193,8 +193,10 @@
                     Width="80"
                     Height="25"
                     VerticalAlignment="Center"
-                    HorizontalAlignment="Center"
-                    Command="{Binding PressResetCommand}">
+                    HorizontalAlignment="Left"
+                    Command="{Binding PressResetCommand}"
+                    Grid.ColumnSpan="3"
+                    Margin="20,0,0,0">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Style.Triggers>
@@ -220,14 +222,15 @@
             </Button>
 
             <Label Content="Pick your store:"
-                   Grid.Column="3"
+                   Grid.Column="1"
                    FontSize="12"
                    FontWeight="Bold"
                    Height="25"
                    Width="100"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Left"
-                   Margin="6,0,0,0">
+                   Grid.ColumnSpan="3"
+                   Margin="12,0,0,0">
                 <Label.Style>
                     <Style TargetType="Label">
                         <Style.Triggers>
@@ -253,7 +256,7 @@
             <ComboBox x:Name="StoreIDComboBox"
                       VerticalAlignment="Center"
                       HorizontalAlignment="Left"
-                      Margin="86,0,0,0"
+                      Margin="58,0,0,0"
                       Width="180"
                       ItemsSource="{Binding Stores}"
                       SelectedValuePath="StoreID"
@@ -261,7 +264,7 @@
                       SelectedItem="{Binding SelectedStore, UpdateSourceTrigger=PropertyChanged}"
                       Height="25"
                       Grid.Column="3"
-                      Grid.ColumnSpan="5">
+                      Grid.ColumnSpan="7">
                 <ComboBox.Style>
                     <Style TargetType="ComboBox">
                         <Style.Triggers>
@@ -289,12 +292,14 @@
                       Width="80"
                       Height="25"
                       VerticalAlignment="Center"
-                      HorizontalAlignment="Center"
+                      HorizontalAlignment="Left"
                       ItemsSource="{Binding Books}"
                       SelectedValuePath="ISBN13"
                       DisplayMemberPath="Title"
                       Grid.Column="6"
-                      SelectedItem="{Binding SelectedBook}">
+                      SelectedItem="{Binding SelectedBook}"
+                      Grid.ColumnSpan="4"
+                      Margin="104,0,0,0">
                 <ComboBox.Style>
                     <Style TargetType="ComboBox">
                         <Style.Triggers>
@@ -325,8 +330,11 @@
                    HorizontalContentAlignment="Center"
                    Height="25"
                    Width="80"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center">
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   RenderTransformOrigin="1.561,0.758"
+                   Grid.ColumnSpan="3"
+                   Margin="212,0,0,0">
                 <Label.Style>
                     <Style TargetType="Label">
                         <Style.Triggers>
@@ -351,14 +359,13 @@
             </Label>
 
             <TextBox x:Name="AmountTB"
-                     Grid.Column="7"
+                     Grid.Column="9"
                      HorizontalAlignment="Left"
                      VerticalAlignment="Center"
                      Height="25"
                      Width="40"
                      Text="{Binding AddToAmount}"
-                     Grid.ColumnSpan="3"
-                     Margin="60,0,0,0">
+                     Margin="305,0,0,0">
                 <TextBox.Style>
                     <Style TargetType="TextBox">
                         <Style.Triggers>
@@ -386,12 +393,11 @@
                     Content="Add amount to inventory"
                     Width="150"
                     Height="25"
-                    Grid.Column="7"
-                    Margin="5,15,0,0"
+                    Grid.Column="9"
+                    Margin="374,10,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Command="{Binding PressAddToInventoryCommand}"
-                    Grid.ColumnSpan="3">
+                    Command="{Binding PressAddToInventoryCommand}">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Style.Triggers>
@@ -419,12 +425,11 @@
                     Content="Remove amount inventory"
                     Width="150"
                     Height="25"
-                    Margin="5,64,0,0"
+                    Margin="374,69,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Grid.Column="7"
-                    Command="{Binding PressRemoveFromInventoryCommand}"
-                    Grid.ColumnSpan="3">
+                    Grid.Column="9"
+                    Command="{Binding PressRemoveFromInventoryCommand}">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Style.Triggers>
